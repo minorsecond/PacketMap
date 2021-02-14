@@ -26,7 +26,7 @@ var WCMap = new TileLayer({
 });
 
 var OPSource = new TileWMS({
-    url: 'http://192.168.3.56:8080/geoserver/PacketMap/wms',
+    url: 'https://geo.spatstats.com/geoserver/PacketMap/wms',
     params: {'LAYERS': 'PacketMap:Operators',
         'TILED': true,
         'VERSION': '1.1.1'},
@@ -35,7 +35,7 @@ var OPSource = new TileWMS({
 });
 
 var digiSource = new TileWMS({
-    url: 'http://192.168.3.56:8080/geoserver/PacketMap/wms',
+    url: 'https://geo.spatstats.com/geoserver/PacketMap/wms',
     params: {'LAYERS': 'PacketMap:Digipeaters',
         'TILED': true,
         'VERSION': '1.1.1'},
