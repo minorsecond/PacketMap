@@ -91,15 +91,26 @@ map.on('singleclick', function (evt) {
         console.log(fetch(opInfo));
         fetch(opInfo)
             .then(function (response) { return response.text(); })
-            .then(function (html) {
-                document.getElementById('info').innerHTML = html;
+            .then(function (json) {
+                var inf = JSON.parse(json).features;
+                inf = inf[0].properties;
+                var call = inf.call;
+                var grid = inf.grid;
+                var last_heard = inf.lastheard;
+
+                document.getElementById('info').innerHTML = call;
             });
     }
     if (digiInfo && DigiMap.getVisible() === true) {
         fetch(digiInfo)
-            .then(function (response) { return response.json(); })
-            .then(function (html) {
-                document.getElementById('info').innerHTML = html;
+            .then(function (response) { return response.text(); })
+            .then(function (json) {
+                var inf = JSON.parse(json).features;
+                inf = inf[0].properties;
+                var call = inf.call;
+                var grid = inf.grid;
+                var last_heard = inf.lastheard;
+                document.getElementById('info').innerHTML = call;
             });
     }
 });
