@@ -134,7 +134,11 @@ map.on('singleclick', function (evt) {
                 var formatted_lh = new Date(last_heard).toLocaleString();
                 var ssid = inf.ssid;
 
-
+                if (heard === true) {
+                    heard = "Yes";
+                } else if (heard === false) {
+                    heard = "No";
+                };
 
                 document.getElementById('info').innerHTML =
                     "<table class=\"styled-table\">\n" +
