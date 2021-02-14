@@ -93,31 +93,34 @@ map.on('singleclick', function (evt) {
             .then(function (response) { return response.text(); })
             .then(function (json) {
                 var inf = JSON.parse(json).features;
-                inf = inf[0].properties;
-                var call = inf.call;
-                var grid = inf.grid;
-                var last_heard = inf.lastheard;
 
-                var formatted_lh = new Date(last_heard).toLocaleString();
+                if (inf.length > 0) {
+                    inf = inf[0].properties;
+                    var call = inf.call;
+                    var grid = inf.grid;
+                    var last_heard = inf.lastheard;
 
-                document.getElementById('info').innerHTML =
-                    "<table class=\"styled-table\">\n" +
-                    "    <thead>\n" +
-                    "        <tr>\n" +
-                    "            <th>Call</th>\n" +
-                    "            <th>Grid</th>\n" +
-                    "            <th>Last Heard</th>\n" +
-                    "        </tr>\n" +
-                    "    </thead>\n" +
-                    "    <tbody>\n" +
-                    "        <tr class=\"active-row\">\n" +
-                    "            <td>call</td>\n".replace("call", call) +
-                    "            <td>grid</td>\n".replace("grid", grid) +
-                    "            <td>last_heard</td>\n".replace("last_heard", formatted_lh) +
-                    "        </tr>\n" +
-                    "        <!-- and so on... -->\n" +
-                    "    </tbody>\n" +
-                    "</table>";
+                    var formatted_lh = new Date(last_heard).toLocaleString();
+
+                    document.getElementById('info').innerHTML =
+                        "<table class=\"styled-table\">\n" +
+                        "    <thead>\n" +
+                        "        <tr>\n" +
+                        "            <th>Call</th>\n" +
+                        "            <th>Grid</th>\n" +
+                        "            <th>Last Heard</th>\n" +
+                        "        </tr>\n" +
+                        "    </thead>\n" +
+                        "    <tbody>\n" +
+                        "        <tr class=\"active-row\">\n" +
+                        "            <td>call</td>\n".replace("call", call) +
+                        "            <td>grid</td>\n".replace("grid", grid) +
+                        "            <td>last_heard</td>\n".replace("last_heard", formatted_lh) +
+                        "        </tr>\n" +
+                        "        <!-- and so on... -->\n" +
+                        "    </tbody>\n" +
+                        "</table>";
+                }
             });
     }
     if (digiInfo && DigiMap.getVisible() === true) {
@@ -125,43 +128,45 @@ map.on('singleclick', function (evt) {
             .then(function (response) { return response.text(); })
             .then(function (json) {
                 var inf = JSON.parse(json).features;
-                console.log(inf);
-                inf = inf[0].properties;
-                var call = inf.call;
-                var grid = inf.grid;
-                var heard = inf.heard;
-                var last_heard = inf.lastheard;
-                var formatted_lh = new Date(last_heard).toLocaleString();
-                var ssid = inf.ssid;
 
-                if (heard === true) {
-                    heard = "Yes";
-                } else if (heard === false) {
-                    heard = "No";
+                if (inf.length > 0) {
+                    inf = inf[0].properties;
+                    var call = inf.call;
+                    var grid = inf.grid;
+                    var heard = inf.heard;
+                    var last_heard = inf.lastheard;
+                    var formatted_lh = new Date(last_heard).toLocaleString();
+                    var ssid = inf.ssid;
+
+                    if (heard === true) {
+                        heard = "Yes";
+                    } else if (heard === false) {
+                        heard = "No";
+                    };
+
+                    document.getElementById('info').innerHTML =
+                        "<table class=\"styled-table\">\n" +
+                        "    <thead>\n" +
+                        "        <tr>\n" +
+                        "            <th>Call</th>\n" +
+                        "            <th>SSID</th>\n" +
+                        "            <th>Grid</th>\n" +
+                        "            <th>Heard Directly</th>\n" +
+                        "            <th>Last Heard</th>\n" +
+                        "        </tr>\n" +
+                        "    </thead>\n" +
+                        "    <tbody>\n" +
+                        "        <tr class=\"active-row\">\n" +
+                        "            <td>call</td>\n".replace("call", call) +
+                        "            <td>ssid</td>\n".replace("ssid", ssid) +
+                        "            <td>grid</td>\n".replace("grid", grid) +
+                        "            <td>heard_directly</td>\n".replace("heard_directly", heard) +
+                        "            <td>last_heard</td>\n".replace("last_heard", formatted_lh) +
+                        "        </tr>\n" +
+                        "        <!-- and so on... -->\n" +
+                        "    </tbody>\n" +
+                        "</table>"
                 };
-
-                document.getElementById('info').innerHTML =
-                    "<table class=\"styled-table\">\n" +
-                    "    <thead>\n" +
-                    "        <tr>\n" +
-                    "            <th>Call</th>\n" +
-                    "            <th>SSID</th>\n" +
-                    "            <th>Grid</th>\n" +
-                    "            <th>Heard Directly</th>\n" +
-                    "            <th>Last Heard</th>\n" +
-                    "        </tr>\n" +
-                    "    </thead>\n" +
-                    "    <tbody>\n" +
-                    "        <tr class=\"active-row\">\n" +
-                    "            <td>call</td>\n".replace("call", call) +
-                    "            <td>ssid</td>\n".replace("ssid", ssid) +
-                    "            <td>grid</td>\n".replace("grid", grid) +
-                    "            <td>heard_directly</td>\n".replace("heard_directly", heard) +
-                    "            <td>last_heard</td>\n".replace("last_heard", formatted_lh) +
-                    "        </tr>\n" +
-                    "        <!-- and so on... -->\n" +
-                    "    </tbody>\n" +
-                    "</table>"
             });
     }
 });
