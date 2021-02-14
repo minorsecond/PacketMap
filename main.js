@@ -79,15 +79,16 @@ map.on('singleclick', function (evt) {
         evt.coordinate,
         viewResolution,
         'EPSG:3857',
-        {'INFO_FORMAT': 'text/html'}
+        {'INFO_FORMAT': 'application/json'}
     );
     var digiInfo = digiSource.getFeatureInfoUrl(
         evt.coordinate,
         viewResolution,
         'EPSG:3857',
-        {'INFO_FORMAT': 'text/html'}
+        {'INFO_FORMAT': 'application/json'}
     )
     if (opInfo && OPMap.getVisible() === true) {
+        console.log(fetch(opInfo));
         fetch(opInfo)
             .then(function (response) { return response.text(); })
             .then(function (html) {
@@ -96,7 +97,7 @@ map.on('singleclick', function (evt) {
     }
     if (digiInfo && DigiMap.getVisible() === true) {
         fetch(digiInfo)
-            .then(function (response) { return response.text(); })
+            .then(function (response) { return response.json(); })
             .then(function (html) {
                 document.getElementById('info').innerHTML = html;
             });
