@@ -106,11 +106,14 @@ map.on('singleclick', function (evt) {
             .then(function (response) { return response.text(); })
             .then(function (json) {
                 var inf = JSON.parse(json).features;
+                console.log(inf);
                 inf = inf[0].properties;
                 var call = inf.call;
                 var grid = inf.grid;
+                var heard = inf.heard;
                 var last_heard = inf.lastheard;
-                document.getElementById('info').innerHTML = call;
+                var ssid = inf.ssid;
+                document.getElementById('info').innerHTML = call + '-' + ssid;
             });
     }
 });
