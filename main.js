@@ -4,6 +4,9 @@ import ImageWMS from 'ol/source/ImageWMS';
 import TileWMS from 'ol/source/TileWMS';
 import Map from 'ol/Map';
 import OSM from 'ol/source/OSM';
+import SourceStamen from 'ol/source/Stamen';
+import LayerGroup from 'ol/layer/Group';
+import LayerTile from 'ol/layer/Tile';
 import View from 'ol/View';
 import {Image as ImageLayer, Tile as TileLayer} from 'ol/layer';
 
@@ -12,7 +15,18 @@ import { BaseLayerOptions, GroupLayerOptions } from 'ol-layerswitcher';
 
 var layers = [
   new TileLayer({
+    title: 'OSM',
+    type: 'base',
+    visible: true,
     source: new OSM(),
+  }),
+  new TileLayer({
+      title: 'Watercolor',
+      type: 'base',
+      visible: false,
+      source: new SourceStamen({
+          layer: 'watercolor'
+      })
   }),
   new TileLayer({
     extent: [-180, -90, 180, 90],
@@ -30,6 +44,7 @@ var layers = [
   new TileLayer({
     extent: [-180, -90, 180, 90],
     title: 'Digipeaters',
+      visible: false,
     source: new TileWMS({
       url: 'http://192.168.3.56:8080/geoserver/PacketMap/wms',
       params: {'LAYERS': 'PacketMap:Digipeaters',
