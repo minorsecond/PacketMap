@@ -78,13 +78,13 @@ map.on('singleclick', function (evt) {
     var opInfo = OPSource.getFeatureInfoUrl(
         evt.coordinate,
         viewResolution,
-        'EPSG:4326',
+        'EPSG:3857',
         {'INFO_FORMAT': 'text/html'}
     );
     var digiInfo = digiSource.getFeatureInfoUrl(
         evt.coordinate,
         viewResolution,
-        'EPSG:4326',
+        'EPSG:3857',
         {'INFO_FORMAT': 'text/html'}
     )
     if (opInfo && OPMap.getVisible() === true) {
