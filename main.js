@@ -98,7 +98,24 @@ map.on('singleclick', function (evt) {
                 var grid = inf.grid;
                 var last_heard = inf.lastheard;
 
-                document.getElementById('info').innerHTML = call;
+                document.getElementById('info').innerHTML =
+                    "<table class=\"styled-table\">\n" +
+                    "    <thead>\n" +
+                    "        <tr>\n" +
+                    "            <th>Call</th>\n" +
+                    "            <th>Grid</th>\n" +
+                    "            <th>Last Heard</th>\n" +
+                    "        </tr>\n" +
+                    "    </thead>\n" +
+                    "    <tbody>\n" +
+                    "        <tr class=\"active-row\">\n" +
+                    "            <td>call</td>\n".replace("call", call) +
+                    "            <td>grid</td>\n".replace("grid", grid) +
+                    "            <td>last_heard</td>\n".replace("last_heard", last_heard) +
+                    "        </tr>\n" +
+                    "        <!-- and so on... -->\n" +
+                    "    </tbody>\n" +
+                    "</table>";
             });
     }
     if (digiInfo && DigiMap.getVisible() === true) {
@@ -113,7 +130,28 @@ map.on('singleclick', function (evt) {
                 var heard = inf.heard;
                 var last_heard = inf.lastheard;
                 var ssid = inf.ssid;
-                document.getElementById('info').innerHTML = call + '-' + ssid;
+                document.getElementById('info').innerHTML =
+                    "<table class=\"styled-table\">\n" +
+                    "    <thead>\n" +
+                    "        <tr>\n" +
+                    "            <th>Call</th>\n" +
+                    "            <th>SSID</th>\n" +
+                    "            <th>Grid</th>\n" +
+                    "            <th>Heard Directly</th>\n" +
+                    "            <th>Last Heard</th>\n" +
+                    "        </tr>\n" +
+                    "    </thead>\n" +
+                    "    <tbody>\n" +
+                    "        <tr class=\"active-row\">\n" +
+                    "            <td>call</td>\n".replace("call", call) +
+                    "            <td>ssid</td>\n".replace("ssid", ssid) +
+                    "            <td>grid</td>\n".replace("grid", grid) +
+                    "            <td>heard_directly</td>\n".replace("heard_directly", heard) +
+                    "            <td>last_heard</td>\n".replace("last_heard", last_heard) +
+                    "        </tr>\n" +
+                    "        <!-- and so on... -->\n" +
+                    "    </tbody>\n" +
+                    "</table>"
             });
     }
 });
