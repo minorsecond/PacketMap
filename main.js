@@ -98,6 +98,8 @@ map.on('singleclick', function (evt) {
                 var grid = inf.grid;
                 var last_heard = inf.lastheard;
 
+                var formatted_lh = new Date(last_heard).toLocaleString();
+
                 document.getElementById('info').innerHTML =
                     "<table class=\"styled-table\">\n" +
                     "    <thead>\n" +
@@ -111,7 +113,7 @@ map.on('singleclick', function (evt) {
                     "        <tr class=\"active-row\">\n" +
                     "            <td>call</td>\n".replace("call", call) +
                     "            <td>grid</td>\n".replace("grid", grid) +
-                    "            <td>last_heard</td>\n".replace("last_heard", last_heard) +
+                    "            <td>last_heard</td>\n".replace("last_heard", formatted_lh) +
                     "        </tr>\n" +
                     "        <!-- and so on... -->\n" +
                     "    </tbody>\n" +
@@ -129,7 +131,11 @@ map.on('singleclick', function (evt) {
                 var grid = inf.grid;
                 var heard = inf.heard;
                 var last_heard = inf.lastheard;
+                var formatted_lh = new Date(last_heard).toLocaleString();
                 var ssid = inf.ssid;
+
+
+
                 document.getElementById('info').innerHTML =
                     "<table class=\"styled-table\">\n" +
                     "    <thead>\n" +
@@ -147,7 +153,7 @@ map.on('singleclick', function (evt) {
                     "            <td>ssid</td>\n".replace("ssid", ssid) +
                     "            <td>grid</td>\n".replace("grid", grid) +
                     "            <td>heard_directly</td>\n".replace("heard_directly", heard) +
-                    "            <td>last_heard</td>\n".replace("last_heard", last_heard) +
+                    "            <td>last_heard</td>\n".replace("last_heard", formatted_lh) +
                     "        </tr>\n" +
                     "        <!-- and so on... -->\n" +
                     "    </tbody>\n" +
