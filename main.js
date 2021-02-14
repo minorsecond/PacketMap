@@ -28,7 +28,6 @@ var WCMap = new TileLayer({
 var OPSource = new TileWMS({
     url: 'http://192.168.3.56:8080/geoserver/PacketMap/wms',
     params: {'LAYERS': 'PacketMap:Operators',
-        'CRS': 'EPSG:4326',
         'TILED': true,
         'VERSION': '1.1.1'},
     ratio: 1,
@@ -38,7 +37,6 @@ var OPSource = new TileWMS({
 var digiSource = new TileWMS({
     url: 'http://192.168.3.56:8080/geoserver/PacketMap/wms',
     params: {'LAYERS': 'PacketMap:Digipeaters',
-        'CRS': 'EPSG:4326',
         'TILED': true,
         'VERSION': '1.1.1'},
     ratio: 1,
@@ -46,13 +44,11 @@ var digiSource = new TileWMS({
 })
 
 var OPMap = new TileLayer({
-    extent: [-180, -90, 180, 90],
     title: 'Operators',
     source: OPSource,
 });
 
 var DigiMap = new TileLayer({
-    extent: [-180, -90, 180, 90],
     title: 'Digipeaters',
     visible: false,
     source: digiSource,
@@ -64,8 +60,7 @@ var layerSwitcher = new LayerSwitcher({
 })
 
 var view = new View({
-    projection: 'EPSG:4326',
-    center: [-104.9903, 39.7392],
+    center: [-11686454,4832146],
     zoom: 8,
 });
 
