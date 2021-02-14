@@ -140,6 +140,12 @@ map.on('singleclick', function (evt) {
                     heard = "No";
                 };
 
+                console.log(ssid);
+
+                if (ssid === null) {
+                    ssid = "None";
+                };
+
                 document.getElementById('info').innerHTML =
                     "<table class=\"styled-table\">\n" +
                     "    <thead>\n" +
