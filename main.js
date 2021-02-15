@@ -76,7 +76,7 @@ var layerSwitcher = new LayerSwitcher({
 
 var view = new View({
     center: [-11686454,4832146],
-    zoom: 8,
+    zoom: 4,
 });
 
 var map = new Map({
@@ -229,7 +229,7 @@ map.on('singleclick', function (evt) {
                         "        <!-- and so on... -->\n" +
                         "    </tbody>\n" +
                         "</table>"
-                };
+                }
             });
     }
 });
