@@ -173,7 +173,7 @@ map.on('singleclick', function (evt) {
                     document.getElementById('info').innerHTML =
                         "<table class=\"styled-table\">\n" +
                         "    <thead>\n" +
-                        "      <tr><th colspan='3' class='table-title'>Digipeater Data</th></tr>" +
+                        "      <tr><th colspan='5' class='table-title'>Digipeater Data</th></tr>" +
                         "        <tr>\n" +
                         "            <th>Call</th>\n" +
                         "            <th>SSID</th>\n" +
