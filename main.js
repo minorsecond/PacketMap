@@ -43,15 +43,30 @@ var digiSource = new TileWMS({
     serverType: 'geoserver',
 })
 
+var nodeSource = new TileWMS({
+    url: 'https://geo.spatstats.com/geoserver/PacketMap/wms',
+    params: {'LAYERS': 'PacketMap:Nodes',
+        'TILED': true,
+        'VERSION': '1.1.1'},
+    ratio: 1,
+    serverType: 'geoserver',
+});
+
 var OPMap = new TileLayer({
-    title: 'Operators',
+    title: 'Local Operators',
     source: OPSource,
 });
 
 var DigiMap = new TileLayer({
-    title: 'Digipeaters',
+    title: 'Local Digipeaters',
     visible: false,
     source: digiSource,
+});
+
+var NodeMap = new TileLayer({
+    title: 'Remote Nodes',
+    visible: false,
+    source: nodeSource,
 });
 
 var layerSwitcher = new LayerSwitcher({
@@ -65,7 +80,7 @@ var view = new View({
 });
 
 var map = new Map({
-  layers: [OSMLayer, WCMap, OPMap, DigiMap],
+  layers: [OSMLayer, WCMap, OPMap, DigiMap, NodeMap],
   target: 'map',
   view: view,
 });
@@ -82,6 +97,12 @@ map.on('singleclick', function (evt) {
         {'INFO_FORMAT': 'application/json'}
     );
     var digiInfo = digiSource.getFeatureInfoUrl(
+        evt.coordinate,
+        viewResolution,
+        'EPSG:3857',
+        {'INFO_FORMAT': 'application/json'}
+    )
+    var nodeInfo = nodeSource.getFeatureInfoUrl(
         evt.coordinate,
         viewResolution,
         'EPSG:3857',
@@ -165,6 +186,49 @@ map.on('singleclick', function (evt) {
                         "            <td>ssid</td>\n".replace("ssid", ssid) +
                         "            <td>grid</td>\n".replace("grid", grid) +
                         "            <td>heard_directly</td>\n".replace("heard_directly", heard) +
+                        "            <td>last_heard</td>\n".replace("last_heard", formatted_lh) +
+                        "        </tr>\n" +
+                        "        <!-- and so on... -->\n" +
+                        "    </tbody>\n" +
+                        "</table>"
+                };
+            });
+    }
+    if (nodeInfo && NodeMap.getVisible() === true) {
+        fetch(nodeInfo)
+            .then(function (response) { return response.text(); })
+            .then(function (json) {
+                var inf = JSON.parse(json).features;
+
+                if (inf.length > 0) {
+                    inf = inf[0].properties;
+                    console.log(inf)
+                    var call = inf.call;
+                    var grid = inf.grid;
+                    var last_checked = inf.last_check;
+                    var formatted_lh = new Date(last_checked).toLocaleString();
+                    var ssid = inf.ssid;
+
+                    if (ssid === null) {
+                        ssid = "None";
+                    };
+
+                    document.getElementById('info').innerHTML =
+                        "<table class=\"styled-table\">\n" +
+                        "    <thead>\n" +
+                        "        <tr>\n" +
+                        "            <th>Call</th>\n" +
+                        "            <th>SSID</th>\n" +
+                        "            <th>Grid</th>\n" +
+                        "            <th>Heard Directly</th>\n" +
+                        "            <th>Last Heard</th>\n" +
+                        "        </tr>\n" +
+                        "    </thead>\n" +
+                        "    <tbody>\n" +
+                        "        <tr class=\"active-row\">\n" +
+                        "            <td>call</td>\n".replace("call", call) +
+                        "            <td>ssid</td>\n".replace("ssid", ssid) +
+                        "            <td>grid</td>\n".replace("grid", grid) +
                         "            <td>last_heard</td>\n".replace("last_heard", formatted_lh) +
                         "        </tr>\n" +
                         "        <!-- and so on... -->\n" +
