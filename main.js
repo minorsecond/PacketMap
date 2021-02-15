@@ -42,6 +42,7 @@ const OPSource = new TileWMS({
 
 const digiSource = new TileWMS({
     url: 'https://geo.spatstats.com/geoserver/PacketMap/wms',
+    attributions: "| Robert Ross Wardrup | https://www.rwardrup.com",
     params: {'LAYERS': 'PacketMap:Digipeaters',
         'TILED': true,
         'VERSION': '1.1.1'},
@@ -51,6 +52,7 @@ const digiSource = new TileWMS({
 
 const nodeSource = new TileWMS({
     url: 'https://geo.spatstats.com/geoserver/PacketMap/wms',
+    attributions: "| Robert Ross Wardrup | https://www.rwardrup.com",
     params: {'LAYERS': 'PacketMap:Nodes',
         'TILED': true,
         'VERSION': '1.1.1'},
