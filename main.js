@@ -5,6 +5,7 @@ import Map from 'ol/Map';
 import OSM from 'ol/source/OSM';
 import SourceStamen from 'ol/source/Stamen';
 import View from 'ol/View';
+import * as control from 'ol/control'
 import {Tile as TileLayer} from 'ol/layer';
 
 import LayerSwitcher from 'ol-layerswitcher';
@@ -25,8 +26,13 @@ const WCMap = new TileLayer({
     })
 });
 
+var attribution = new control.Attribution({
+    html: "Robert Ross Wardrup",
+})
+
 const OPSource = new TileWMS({
     url: 'https://geo.spatstats.com/geoserver/PacketMap/wms',
+    attributions: attribution,
     params: {'LAYERS': 'PacketMap:Operators',
         'TILED': true,
         'VERSION': '1.1.1'},
@@ -36,6 +42,7 @@ const OPSource = new TileWMS({
 
 const digiSource = new TileWMS({
     url: 'https://geo.spatstats.com/geoserver/PacketMap/wms',
+    attributions: attribution,
     params: {'LAYERS': 'PacketMap:Digipeaters',
         'TILED': true,
         'VERSION': '1.1.1'},
@@ -45,6 +52,7 @@ const digiSource = new TileWMS({
 
 const nodeSource = new TileWMS({
     url: 'https://geo.spatstats.com/geoserver/PacketMap/wms',
+    attributions: attribution,
     params: {'LAYERS': 'PacketMap:Nodes',
         'TILED': true,
         'VERSION': '1.1.1'},
@@ -55,18 +63,21 @@ const nodeSource = new TileWMS({
 const OPMap = new TileLayer({
     title: 'Local Operators',
     source: OPSource,
+    attributions: attribution,
 });
 
 const DigiMap = new TileLayer({
     title: 'Local Digipeaters',
     visible: true,
     source: digiSource,
+    attributions: attribution,
 });
 
 const NodeMap = new TileLayer({
     title: 'Remote Nodes',
     visible: true,
     source: nodeSource,
+    attributions: attribution,
 });
 
 const layerSwitcher = new LayerSwitcher({
