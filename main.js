@@ -206,30 +206,22 @@ map.on('singleclick', function (evt) {
                     var call = inf.call;
                     var grid = inf.grid;
                     var last_checked = inf.last_check;
-                    var formatted_lh = new Date(last_checked).toLocaleString();
-                    var ssid = inf.ssid;
-
-                    if (ssid === null) {
-                        ssid = "None";
-                    };
+                    var formatted_last_check = new Date(last_checked).toLocaleString();
 
                     document.getElementById('info').innerHTML =
                         "<table class=\"styled-table\">\n" +
                         "    <thead>\n" +
                         "        <tr>\n" +
                         "            <th>Call</th>\n" +
-                        "            <th>SSID</th>\n" +
                         "            <th>Grid</th>\n" +
-                        "            <th>Heard Directly</th>\n" +
-                        "            <th>Last Heard</th>\n" +
+                        "            <th>Last Check</th>\n" +
                         "        </tr>\n" +
                         "    </thead>\n" +
                         "    <tbody>\n" +
                         "        <tr class=\"active-row\">\n" +
                         "            <td>call</td>\n".replace("call", call) +
-                        "            <td>ssid</td>\n".replace("ssid", ssid) +
                         "            <td>grid</td>\n".replace("grid", grid) +
-                        "            <td>last_heard</td>\n".replace("last_heard", formatted_lh) +
+                        "            <td>last_check</td>\n".replace("last_check", formatted_last_check) +
                         "        </tr>\n" +
                         "        <!-- and so on... -->\n" +
                         "    </tbody>\n" +
