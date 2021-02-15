@@ -59,13 +59,13 @@ var OPMap = new TileLayer({
 
 var DigiMap = new TileLayer({
     title: 'Local Digipeaters',
-    visible: false,
+    visible: true,
     source: digiSource,
 });
 
 var NodeMap = new TileLayer({
     title: 'Remote Nodes',
-    visible: false,
+    visible: true,
     source: nodeSource,
 });
 
@@ -80,7 +80,7 @@ var view = new View({
 });
 
 var map = new Map({
-  layers: [OSMLayer, WCMap, OPMap, DigiMap, NodeMap],
+  layers: [OSMLayer, WCMap, NodeMap, DigiMap, OPMap],
   target: 'map',
   view: view,
 });
