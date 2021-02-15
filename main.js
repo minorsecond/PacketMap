@@ -5,7 +5,11 @@ import Map from 'ol/Map';
 import OSM from 'ol/source/OSM';
 import SourceStamen from 'ol/source/Stamen';
 import View from 'ol/View';
-import {Tile as TileLayer} from 'ol/layer';
+import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
+import {bbox as bboxStrategy, all as allStrategy} from 'ol/loadingstrategy'
+import VectorSource from 'ol/source/Vector';
+import GeoJSON from 'ol/format/GeoJSON';
+import {Stroke, Style, Circle, Fill} from 'ol/style';
 
 import LayerSwitcher from 'ol-layerswitcher';
 
@@ -25,48 +29,91 @@ const WCMap = new TileLayer({
     })
 });
 
-const OPSource = new TileWMS({
-    url: 'https://geo.spatstats.com/geoserver/PacketMap/wms',
-    params: {'LAYERS': 'PacketMap:Operators',
-        'TILED': true,
-        'VERSION': '1.1.1'},
-    ratio: 1,
-    serverType: 'geoserver',
+const OPSource = new VectorSource({
+    format: new GeoJSON(),
+    url: function (extent) {
+        return (
+            'https://geo.spatstats.com/geoserver/ows?service=WFS&' +
+            'version=1.0.0&request=GetFeature&typename=PacketMap:Operators&' +
+            'outputFormat=application/json&srsname=EPSG:3857&' +
+            'bbox=' +
+            extent.join(',') +
+            ',EPSG:3857'
+        );
+    },
+    strategy: bboxStrategy,
 });
 
-const digiSource = new TileWMS({
-    url: 'https://geo.spatstats.com/geoserver/PacketMap/wms',
-    params: {'LAYERS': 'PacketMap:Digipeaters',
-        'TILED': true,
-        'VERSION': '1.1.1'},
-    ratio: 1,
-    serverType: 'geoserver',
-})
-
-const nodeSource = new TileWMS({
-    url: 'https://geo.spatstats.com/geoserver/PacketMap/wms',
-    params: {'LAYERS': 'PacketMap:Nodes',
-        'TILED': true,
-        'VERSION': '1.1.1'},
-    ratio: 1,
-    serverType: 'geoserver',
+const digiSource = new VectorSource({
+    format: new GeoJSON(),
+    url: function (extent) {
+        return (
+            'https://geo.spatstats.com/geoserver/ows?service=WFS&' +
+            'version=1.0.0&request=GetFeature&typename=PacketMap:Digipeaters&' +
+            'outputFormat=application/json&srsname=EPSG:3857&' +
+            'bbox=' +
+            extent.join(',') +
+            ',EPSG:3857'
+        );
+    },
+    strategy: bboxStrategy,
 });
 
-const OPMap = new TileLayer({
+const nodeSource = new VectorSource({
+    format: new GeoJSON(),
+    url: function (extent) {
+        return (
+            'https://geo.spatstats.com/geoserver/ows?service=WFS&' +
+            'version=1.0.0&request=GetFeature&typename=PacketMap:Nodes&' +
+            'outputFormat=application/json&srsname=EPSG:3857&' +
+            'bbox=' +
+            extent.join(',') +
+            ',EPSG:3857'
+        );
+    },
+    strategy: bboxStrategy,
+});
+
+var OPMap = new VectorLayer({
     title: 'Local Operators',
+    visible: true,
     source: OPSource,
+    style: new Style({
+        image: new Circle({
+            radius: 5,
+            fill: new Fill({
+                color: 'rgba(55, 126, 184, 1.0)'
+            }),
+        })
+    }),
 });
 
-const DigiMap = new TileLayer({
+var DigiMap = new VectorLayer({
     title: 'Local Digipeaters',
     visible: true,
     source: digiSource,
+    style: new Style({
+        image: new Circle({
+            radius: 5,
+            fill: new Fill({
+                color: 'rgba(77, 175, 74, 1.0)'
+            }),
+        })
+    }),
 });
 
-const NodeMap = new TileLayer({
+var NodeMap = new VectorLayer({
     title: 'Remote Nodes',
     visible: true,
     source: nodeSource,
+    style: new Style({
+        image: new Circle({
+            radius: 5,
+            fill: new Fill({
+                color: 'rgba(152, 78, 163, 1.0)'
+            }),
+        })
+    }),
 });
 
 const layerSwitcher = new LayerSwitcher({
@@ -85,9 +132,53 @@ const map = new Map({
   view: view,
 });
 
+var highlightStyle = new Style({
+    stroke: new Stroke({
+        color: '#f00',
+        width: 1,
+    }),
+    fill: new Fill({
+        color: 'rgba(255,0,0,0.1)',
+    }),
+    text: new Text({
+        font: '12px Calibri,sans-serif',
+        fill: new Fill({
+            color: '#000',
+        }),
+        stroke: new Stroke({
+            color: '#f00',
+            width: 3,
+        }),
+    }),
+});
+
+var highlight;
+var displayFeatureInfo = function (pixel) {
+    NodeMap.getFeatures(pixel).then(function (features) {
+        var feature = features.length ? features[0] : undefined;
+        var info = document.getElementById('info');
+        if (features.length) {
+            info.innerHTML = feature.getId() + ': ' + feature.get('name');
+        } else {
+            info.innerHTML = '&nbsp;';
+        }
+
+        if (feature !== highlight) {
+            if (highlight) {
+                featureOverlay.getSource().removeFeature(highlight);
+            }
+            if (feature) {
+                featureOverlay.getSource().addFeature(feature);
+            }
+            highlight = feature;
+        }
+    });
+};
+
 map.addControl(layerSwitcher);
 
 map.on('singleclick', function (evt) {
+    displayFeatureInfo(evt.pixel);
     document.getElementById('info').innerHTML = '';
     const viewResolution = /** @type {number} */ (view.getResolution());
     const opInfo = OPSource.getFeatureInfoUrl(
