@@ -8,6 +8,9 @@ body {
     color: #009879;
     background-color: #ffffff;
     text-align: center;
+    border-top: 2px solid #009879;
+    border-left: 2px solid #009879;
+    border-right: 2px solid #009879;
 }
 
 .styled-table {
@@ -23,6 +26,8 @@ body {
     background-color: #009879;
     color: #ffffff;
     text-align: left;
+    border-left: 2px solid #009879;
+    border-right: 2px solid #009879;
 }
 
 .styled-table th,
@@ -46,4 +51,6 @@ body {
     font-weight: bold;
     color: #009879;
     background-color: #ffffff;
+    border-left: 2px solid #009879;
+    border-right: 2px solid #009879;
 }
