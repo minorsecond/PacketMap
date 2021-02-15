@@ -9,14 +9,14 @@ import {Tile as TileLayer} from 'ol/layer';
 
 import LayerSwitcher from 'ol-layerswitcher';
 
-var OSMLayer = new TileLayer({
+const OSMLayer = new TileLayer({
     title: 'OSM',
     type: 'base',
     visible: true,
     source: new OSM(),
 });
 
-var WCMap = new TileLayer({
+const WCMap = new TileLayer({
     title: 'Watercolor',
     type: 'base',
     visible: false,
@@ -25,7 +25,7 @@ var WCMap = new TileLayer({
     })
 });
 
-var OPSource = new TileWMS({
+const OPSource = new TileWMS({
     url: 'https://geo.spatstats.com/geoserver/PacketMap/wms',
     params: {'LAYERS': 'PacketMap:Operators',
         'TILED': true,
@@ -34,7 +34,7 @@ var OPSource = new TileWMS({
     serverType: 'geoserver',
 });
 
-var digiSource = new TileWMS({
+const digiSource = new TileWMS({
     url: 'https://geo.spatstats.com/geoserver/PacketMap/wms',
     params: {'LAYERS': 'PacketMap:Digipeaters',
         'TILED': true,
@@ -43,7 +43,7 @@ var digiSource = new TileWMS({
     serverType: 'geoserver',
 })
 
-var nodeSource = new TileWMS({
+const nodeSource = new TileWMS({
     url: 'https://geo.spatstats.com/geoserver/PacketMap/wms',
     params: {'LAYERS': 'PacketMap:Nodes',
         'TILED': true,
@@ -52,34 +52,34 @@ var nodeSource = new TileWMS({
     serverType: 'geoserver',
 });
 
-var OPMap = new TileLayer({
+const OPMap = new TileLayer({
     title: 'Local Operators',
     source: OPSource,
 });
 
-var DigiMap = new TileLayer({
+const DigiMap = new TileLayer({
     title: 'Local Digipeaters',
     visible: true,
     source: digiSource,
 });
 
-var NodeMap = new TileLayer({
+const NodeMap = new TileLayer({
     title: 'Remote Nodes',
     visible: true,
     source: nodeSource,
 });
 
-var layerSwitcher = new LayerSwitcher({
+const layerSwitcher = new LayerSwitcher({
     reverse: true,
     groupSelectStyle: 'group'
 })
 
-var view = new View({
+const view = new View({
     center: [-11686454,4832146],
     zoom: 4,
 });
 
-var map = new Map({
+const map = new Map({
   layers: [OSMLayer, WCMap, NodeMap, DigiMap, OPMap],
   target: 'map',
   view: view,
@@ -89,39 +89,42 @@ map.addControl(layerSwitcher);
 
 map.on('singleclick', function (evt) {
     document.getElementById('info').innerHTML = '';
-    var viewResolution = /** @type {number} */ (view.getResolution());
-    var opInfo = OPSource.getFeatureInfoUrl(
+    const viewResolution = /** @type {number} */ (view.getResolution());
+    const opInfo = OPSource.getFeatureInfoUrl(
         evt.coordinate,
         viewResolution,
         'EPSG:3857',
         {'INFO_FORMAT': 'application/json'}
     );
-    var digiInfo = digiSource.getFeatureInfoUrl(
+    const digiInfo = digiSource.getFeatureInfoUrl(
         evt.coordinate,
         viewResolution,
         'EPSG:3857',
         {'INFO_FORMAT': 'application/json'}
     )
-    var nodeInfo = nodeSource.getFeatureInfoUrl(
+    const nodeInfo = nodeSource.getFeatureInfoUrl(
         evt.coordinate,
         viewResolution,
         'EPSG:3857',
         {'INFO_FORMAT': 'application/json'}
     )
     if (opInfo && OPMap.getVisible() === true) {
-        console.log(fetch(opInfo));
         fetch(opInfo)
             .then(function (response) { return response.text(); })
             .then(function (json) {
-                var inf = JSON.parse(json).features;
+                let inf = JSON.parse(json).features;
 
                 if (inf.length > 0) {
                     inf = inf[0].properties;
-                    var call = inf.call;
-                    var grid = inf.grid;
-                    var last_heard = inf.lastheard;
+                    const call = inf.call;
+                    const grid = inf.grid;
 
-                    var formatted_lh = new Date(last_heard).toLocaleString();
+                    /**
+                     * @param inf.lastheard
+                     */
+                    const last_heard = inf.lastheard;
+
+                    const formatted_lh = new Date(last_heard).toLocaleString();
 
                     document.getElementById('info').innerHTML =
                         "<table class=\"styled-table\">\n" +
@@ -149,26 +152,34 @@ map.on('singleclick', function (evt) {
         fetch(digiInfo)
             .then(function (response) { return response.text(); })
             .then(function (json) {
-                var inf = JSON.parse(json).features;
+                let inf = JSON.parse(json).features;
 
                 if (inf.length > 0) {
                     inf = inf[0].properties;
-                    var call = inf.call;
-                    var grid = inf.grid;
-                    var heard = inf.heard;
-                    var last_heard = inf.lastheard;
-                    var formatted_lh = new Date(last_heard).toLocaleString();
-                    var ssid = inf.ssid;
+                    const call = inf.call;
+                    const grid = inf.grid;
+
+                    /**
+                     * @param inf.heard
+                     */
+                    let heard = inf.heard;
+                    const last_heard = inf.lastheard;
+                    const formatted_lh = new Date(last_heard).toLocaleString();
+
+                    /**
+                     * @param inf.ssid
+                     */
+                    let ssid = inf.ssid;
 
                     if (heard === true) {
                         heard = "Yes";
                     } else if (heard === false) {
                         heard = "No";
-                    };
+                    }
 
                     if (ssid === null) {
                         ssid = "None";
-                    };
+                    }
 
                     document.getElementById('info').innerHTML =
                         "<table class=\"styled-table\">\n" +
@@ -193,22 +204,26 @@ map.on('singleclick', function (evt) {
                         "        <!-- and so on... -->\n" +
                         "    </tbody>\n" +
                         "</table>"
-                };
+                }
             });
     }
     if (nodeInfo && NodeMap.getVisible() === true) {
         fetch(nodeInfo)
             .then(function (response) { return response.text(); })
             .then(function (json) {
-                var inf = JSON.parse(json).features;
+                let inf = JSON.parse(json).features;
 
                 if (inf.length > 0) {
                     inf = inf[0].properties;
                     console.log(inf)
-                    var call = inf.call;
-                    var grid = inf.grid;
-                    var last_checked = inf.last_check;
-                    var formatted_last_check = new Date(last_checked).toLocaleString();
+                    const call = inf.call;
+                    const grid = inf.grid;
+
+                    /**
+                     * @param inf.last_check
+                     */
+                    const last_checked = inf.last_check;
+                    const formatted_last_check = new Date(last_checked).toLocaleString();
 
                     document.getElementById('info').innerHTML =
                         "<table class=\"styled-table\">\n" +
