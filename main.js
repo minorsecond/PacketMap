@@ -215,7 +215,6 @@ map.on('singleclick', function (evt) {
 
                 if (inf.length > 0) {
                     inf = inf[0].properties;
-                    console.log(inf)
                     const call = inf.call;
                     const grid = inf.grid;
 
