@@ -298,8 +298,38 @@ map.on('singleclick', function (evt) {
         feature_type = "Digipeaters";
         const digi_last_heard = features.get("lastheard");
         const digi_formatted_lh = new Date(digi_last_heard).toLocaleString();
-        const digi_direct_heard = features.get("heard");
+        let digi_direct_heard = features.get("heard");
         const digi_ssid = features.get("ssid");
+
+        if (digi_direct_heard === true) {
+            digi_direct_heard = "Yes";
+        } else if (digi_direct_heard === false) {
+            digi_direct_heard = "No";
+        }
+
+        document.getElementById('info').innerHTML =
+            "<table class=\"styled-table\">\n" +
+            "    <thead>\n" +
+            "      <tr><th colspan='5' class='table-title'>Digipeater Data</th></tr>" +
+            "        <tr>\n" +
+            "            <th>Call</th>\n" +
+            "            <th>SSID</th>\n" +
+            "            <th>Grid</th>\n" +
+            "            <th>Heard Directly</th>\n" +
+            "            <th>Last Heard</th>\n" +
+            "        </tr>\n" +
+            "    </thead>\n" +
+            "    <tbody>\n" +
+            "        <tr class=\"active-row\">\n" +
+            "            <td>call</td>\n".replace("call", call) +
+            "            <td>ssid</td>\n".replace("ssid", digi_ssid) +
+            "            <td>grid</td>\n".replace("grid", grid) +
+            "            <td>heard_directly</td>\n".replace("heard_directly", digi_direct_heard) +
+            "            <td>last_heard</td>\n".replace("last_heard", digi_formatted_lh) +
+            "        </tr>\n" +
+            "        <!-- and so on... -->\n" +
+            "    </tbody>\n" +
+            "</table>"
 
     }
     console.log(feature_type);
