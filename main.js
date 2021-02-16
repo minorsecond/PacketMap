@@ -5,7 +5,6 @@ import Map from 'ol/Map';
 import OSM from 'ol/source/OSM';
 import SourceStamen from 'ol/source/Stamen';
 import View from 'ol/View';
-import * as control from 'ol/control'
 import {Tile as TileLayer} from 'ol/layer';
 
 import LayerSwitcher from 'ol-layerswitcher';
