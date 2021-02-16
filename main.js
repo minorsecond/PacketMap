@@ -237,6 +237,23 @@ map.on('singleclick', function (evt) {
         return feature;
     });
 
+    if (features !== highlight) {
+        if (highlight) {
+            if (highlight.id_.includes("Node")) {
+                highlight.setStyle(NodeStyle);
+            } else if (highlight.id_.includes("Operator")) {
+                highlight.setStyle(OPSTyle);
+            } else if (highlight.id_.includes("Digipeater")) {
+                highlight.setStyle(DigiStyle);
+            }
+        }
+        if (features) {
+            console.log("Hightlighting feature");
+            features.setStyle(highlightStyle);
+        }
+        highlight = features;
+    }
+
     const call = features.get("call");
     const digi_grid = features.get("grid");
     const feature_id = features.id_;
@@ -244,23 +261,6 @@ map.on('singleclick', function (evt) {
         feature_type = "Operators";
         const op_last_heard = features.get("lastheard");
         const op_grid = features.get("grid");
-
-        if (features !== highlight) {
-            if (highlight) {
-                if (highlight.id_.includes("Node")) {
-                    highlight.setStyle(NodeStyle);
-                } else if (highlight.id_.includes("Operator")) {
-                    highlight.setStyle(OPSTyle);
-                } else if (highlight.id_.includes("Digipeater")) {
-                    highlight.setStyle(DigiStyle);
-                }
-            }
-            if (features) {
-                console.log("Hightlighting feature");
-                features.setStyle(highlightStyle);
-            }
-            highlight = features;
-        }
 
     } else if (feature_id.includes("Nodes")) {
         feature_type = "Nodes";
@@ -270,45 +270,11 @@ map.on('singleclick', function (evt) {
         const node_path = features.get("path");
         const node_level = features.get("level");
 
-        if (features !== highlight) {
-            if (highlight) {
-                if (highlight.id_.includes("Node")) {
-                    highlight.setStyle(NodeStyle);
-                } else if (highlight.id_.includes("Operator")) {
-                    highlight.setStyle(OPSTyle);
-                } else if (highlight.id_.includes("Digipeater")) {
-                    highlight.setStyle(DigiStyle);
-                }
-            }
-            if (features) {
-                console.log("Hightlighting feature");
-                features.setStyle(highlightStyle);
-            }
-            highlight = features;
-        }
-
     } else if (feature_id.includes("Digipeaters")) {
         feature_type = "Digipeaters";
         const digi_last_heard = features.get("lastheard");
         const digi_direct_heard = features.get("heard");
         const digi_ssid = features.get("ssid");
-
-        if (features !== highlight) {
-            if (highlight) {
-                if (highlight.id_.includes("Node")) {
-                    highlight.setStyle(NodeStyle);
-                } else if (highlight.id_.includes("Operator")) {
-                    highlight.setStyle(OPSTyle);
-                } else if (highlight.id_.includes("Digipeater")) {
-                    highlight.setStyle(DigiStyle);
-                }
-            }
-            if (features) {
-                console.log("Hightlighting feature");
-                features.setStyle(highlightStyle);
-            }
-            highlight = features;
-        }
 
     }
     console.log(feature_type);
