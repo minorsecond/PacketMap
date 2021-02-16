@@ -232,6 +232,7 @@ const displayFeatureInfo = function (pixel) {
 map.addControl(layerSwitcher);
 
 map.on('singleclick', function (evt) {
+    document.getElementById('info').innerHTML = '';
     let feature_type = undefined;
     let features = map.forEachFeatureAtPixel(evt.pixel, function (feature) {
         return feature;
@@ -255,17 +256,40 @@ map.on('singleclick', function (evt) {
     }
 
     const call = features.get("call");
-    const digi_grid = features.get("grid");
+    const grid = features.get("grid");
     const feature_id = features.id_;
+
     if (feature_id.includes("Operators")) {
         feature_type = "Operators";
         const op_last_heard = features.get("lastheard");
+        const op_formatted_lh = new Date(op_last_heard).toLocaleString();
         const op_grid = features.get("grid");
+
+        document.getElementById('info').innerHTML =
+            "<table class=\"styled-table\">\n" +
+            "    <thead>\n" +
+            "      <tr><th colspan='3' class='table-title'>Operator Data</th></tr>" +
+            "        <tr>\n" +
+            "            <th>Call</th>\n" +
+            "            <th>Grid</th>\n" +
+            "            <th>Last Heard</th>\n" +
+            "        </tr>\n" +
+            "    </thead>\n" +
+            "    <tbody>\n" +
+            "        <tr class=\"active-row\">\n" +
+            "            <td>call</td>\n".replace("call", call) +
+            "            <td>grid</td>\n".replace("grid", grid) +
+            "            <td>last_heard</td>\n".replace("last_heard", op_formatted_lh) +
+            "        </tr>\n" +
+            "        <!-- and so on... -->\n" +
+            "    </tbody>\n" +
+            "</table>";
 
     } else if (feature_id.includes("Nodes")) {
         feature_type = "Nodes";
         const node_p_call = features.get("parent_call");
         const node_last_check = features.get("last_check");
+        const formatted_lc = new Date(node_last_check).toLocaleString();
         const node_ssid = features.get("ssid");
         const node_path = features.get("path");
         const node_level = features.get("level");
@@ -273,6 +297,7 @@ map.on('singleclick', function (evt) {
     } else if (feature_id.includes("Digipeaters")) {
         feature_type = "Digipeaters";
         const digi_last_heard = features.get("lastheard");
+        const digi_formatted_lh = new Date(digi_last_heard).toLocaleString();
         const digi_direct_heard = features.get("heard");
         const digi_ssid = features.get("ssid");
 
