@@ -235,13 +235,25 @@ map.on('singleclick', function (evt) {
         return feature;
     });
 
+    const call = features.get("call");
+    const digi_grid = features.get("grid");
     const feature_id = features.id_;
     if (feature_id.includes("Operators")) {
         feature_type = "Operators";
+        const op_last_heard = features.get("lastheard");
+        const op_grid = features.get("grid");
     } else if (feature_id.includes("Nodes")) {
         feature_type = "Nodes";
+        const node_p_call = features.get("parent_call");
+        const node_last_check = features.get("last_check");
+        const node_ssid = features.get("ssid");
+        const node_path = features.get("path");
+        const node_level = features.get("level");
     } else if (feature_id.includes("Digipeaters")) {
         feature_type = "Digipeaters";
+        const digi_last_heard = features.get("lastheard");
+        const digi_direct_heard = features.get("heard");
+        const digi_ssid = features.get("ssid");
     }
     console.log(feature_type);
     //displayFeatureInfo(evt.pixel);
