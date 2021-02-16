@@ -77,14 +77,13 @@ const nodeSource = new VectorSource({
     strategy: bboxStrategy,
 });
 
-var highlightStyle = new Style({
-    stroke: new Stroke({
-        color: '#f00',
-        width: 1,
-    }),
-    fill: new Fill({
-        color: 'rgba(255,0,0,0.1)',
-    }),
+const highlightStyle = new Style({
+    image: new Circle({
+        radius: 5,
+        fill: new Fill({
+            color: 'rgba(255, 0, 0, 1.0)'
+        }),
+    })
 });
 
 const OPSTyle = new Style({
@@ -92,6 +91,24 @@ const OPSTyle = new Style({
         radius: 5,
         fill: new Fill({
             color: 'rgba(55, 126, 184, 1.0)'
+        }),
+    })
+});
+
+const DigiStyle = new Style({
+    image: new Circle({
+        radius: 5,
+        fill: new Fill({
+            color: 'rgba(77, 175, 74, 1.0)'
+        }),
+    })
+});
+
+const NodeStyle = new Style({
+    image: new Circle({
+        radius: 5,
+        fill: new Fill({
+            color: 'rgba(152, 78, 163, 1.0)'
         }),
     })
 });
@@ -107,28 +124,14 @@ var DigiMap = new VectorLayer({
     title: 'Local Digipeaters',
     visible: true,
     source: digiSource,
-    style: new Style({
-        image: new Circle({
-            radius: 5,
-            fill: new Fill({
-                color: 'rgba(77, 175, 74, 1.0)'
-            }),
-        })
-    }),
+    style: DigiStyle,
 });
 
 var NodeMap = new VectorLayer({
     title: 'Remote Nodes',
     visible: true,
     source: nodeSource,
-    style: new Style({
-        image: new Circle({
-            radius: 5,
-            fill: new Fill({
-                color: 'rgba(152, 78, 163, 1.0)'
-            }),
-        })
-    }),
+    style: NodeStyle,
 });
 
 const layerSwitcher = new LayerSwitcher({
@@ -157,12 +160,11 @@ var featureOverlay = new VectorLayer({
     },
 });
 
-let highlight;
 let selection = undefined;
 
+let highlight;
 const displayFeatureInfo = function (pixel) {
     var feature = get_features;
-
     NodeMap.getFeatures(pixel).then(function (features) {
         feature = features.length ? features[0] : undefined;
         const info = document.getElementById('info');
@@ -174,7 +176,7 @@ const displayFeatureInfo = function (pixel) {
 
         if (feature !== highlight) {
             if (highlight) {
-                feature.style = OPSTyle;
+                highlight.style = OPSTyle;
             }
             if (feature) {
                 feature.style = highlightStyle;
@@ -242,6 +244,24 @@ map.on('singleclick', function (evt) {
         feature_type = "Operators";
         const op_last_heard = features.get("lastheard");
         const op_grid = features.get("grid");
+
+        if (features !== highlight) {
+            if (highlight) {
+                if (highlight.id_.includes("Node")) {
+                    highlight.setStyle(NodeStyle);
+                } else if (highlight.id_.includes("Operator")) {
+                    highlight.setStyle(OPSTyle);
+                } else if (highlight.id_.includes("Digipeater")) {
+                    highlight.setStyle(DigiStyle);
+                }
+            }
+            if (features) {
+                console.log("Hightlighting feature");
+                features.setStyle(highlightStyle);
+            }
+            highlight = features;
+        }
+
     } else if (feature_id.includes("Nodes")) {
         feature_type = "Nodes";
         const node_p_call = features.get("parent_call");
@@ -249,11 +269,47 @@ map.on('singleclick', function (evt) {
         const node_ssid = features.get("ssid");
         const node_path = features.get("path");
         const node_level = features.get("level");
+
+        if (features !== highlight) {
+            if (highlight) {
+                if (highlight.id_.includes("Node")) {
+                    highlight.setStyle(NodeStyle);
+                } else if (highlight.id_.includes("Operator")) {
+                    highlight.setStyle(OPSTyle);
+                } else if (highlight.id_.includes("Digipeater")) {
+                    highlight.setStyle(DigiStyle);
+                }
+            }
+            if (features) {
+                console.log("Hightlighting feature");
+                features.setStyle(highlightStyle);
+            }
+            highlight = features;
+        }
+
     } else if (feature_id.includes("Digipeaters")) {
         feature_type = "Digipeaters";
         const digi_last_heard = features.get("lastheard");
         const digi_direct_heard = features.get("heard");
         const digi_ssid = features.get("ssid");
+
+        if (features !== highlight) {
+            if (highlight) {
+                if (highlight.id_.includes("Node")) {
+                    highlight.setStyle(NodeStyle);
+                } else if (highlight.id_.includes("Operator")) {
+                    highlight.setStyle(OPSTyle);
+                } else if (highlight.id_.includes("Digipeater")) {
+                    highlight.setStyle(DigiStyle);
+                }
+            }
+            if (features) {
+                console.log("Hightlighting feature");
+                features.setStyle(highlightStyle);
+            }
+            highlight = features;
+        }
+
     }
     console.log(feature_type);
     //displayFeatureInfo(evt.pixel);
