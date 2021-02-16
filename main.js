@@ -26,10 +26,6 @@ const WCMap = new TileLayer({
     })
 });
 
-var attribution = new control.Attribution({
-    html: "Robert Ross Wardrup\nhttps://www.rwardrup.com",
-})
-
 const OPSource = new TileWMS({
     url: 'https://geo.spatstats.com/geoserver/PacketMap/wms',
     attributions: "| Robert Ross Wardrup | https://www.rwardrup.com",
