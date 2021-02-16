@@ -31,6 +31,7 @@ const WCMap = new TileLayer({
 
 const OPSource = new VectorSource({
     format: new GeoJSON(),
+    attributions: "| Robert Ross Wardrup | www.rwardrup.com",
     url: function (extent) {
         return (
             'https://geo.spatstats.com/geoserver/ows?service=WFS&' +
@@ -46,6 +47,7 @@ const OPSource = new VectorSource({
 
 const digiSource = new VectorSource({
     format: new GeoJSON(),
+    attributions: "| Robert Ross Wardrup | www.rwardrup.com",
     url: function (extent) {
         return (
             'https://geo.spatstats.com/geoserver/ows?service=WFS&' +
@@ -61,6 +63,7 @@ const digiSource = new VectorSource({
 
 const nodeSource = new VectorSource({
     format: new GeoJSON(),
+    attributions: "| Robert Ross Wardrup | www.rwardrup.com",
     url: function (extent) {
         return (
             'https://geo.spatstats.com/geoserver/ows?service=WFS&' +
