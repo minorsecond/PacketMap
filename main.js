@@ -45,6 +45,22 @@ const RemoteOPSource = new VectorSource({
     strategy: bboxStrategy,
 });
 
+const RemoteDigiSource = new VectorSource({
+    format: new GeoJSON(),
+    attributions: "| Robert Ross Wardrup | www.rwardrup.com",
+    url: function (extent) {
+        return (
+            'https://geo.spatstats.com/geoserver/ows?service=WFS&' +
+            'version=1.0.0&request=GetFeature&typename=PacketMap:Remote_Digipeaters&' +
+            'outputFormat=application/json&srsname=EPSG:3857&' +
+            'bbox=' +
+            extent.join(',') +
+            ',EPSG:3857'
+        );
+    },
+    strategy: bboxStrategy,
+});
+
 const DirectHeardOPSource = new VectorSource({
     format: new GeoJSON(),
     attributions: "| Robert Ross Wardrup | www.rwardrup.com",
@@ -111,6 +127,15 @@ const RemoteHeardOpStyle = new Style({
     })
 });
 
+const RemoteDigiStyle = new Style({
+    image: new Circle({
+        radius: 5,
+        fill: new Fill({
+            color: 'rgba(255, 255, 51, 1.0)'
+        }),
+    })
+});
+
 const DirectHeardOPStyle = new Style({
     image: new Circle({
         radius: 5,
@@ -145,6 +170,13 @@ var RemoteOPMap = new VectorLayer({
     style: RemoteHeardOpStyle,
 });
 
+var RemoteDigiMap = new VectorLayer({
+    title: 'Digipeaters',
+    visible: true,
+    source: RemoteDigiSource,
+    style: RemoteDigiStyle,
+});
+
 var OPMap = new VectorLayer({
     title: 'Local Operators',
     visible: true,
@@ -160,7 +192,7 @@ var DigiMap = new VectorLayer({
 });
 
 var NodeMap = new VectorLayer({
-    title: 'Remote Nodes',
+    title: 'Nodes',
     visible: true,
     source: nodeSource,
     style: NodeStyle,
@@ -177,7 +209,7 @@ const view = new View({
 });
 
 const map = new Map({
-  layers: [OSMLayer, WCMap, RemoteOPMap, NodeMap, DigiMap, OPMap],
+  layers: [OSMLayer, WCMap, RemoteOPMap, RemoteDigiMap, NodeMap, DigiMap, OPMap],
   target: 'map',
   view: view,
 });
@@ -296,6 +328,8 @@ map.on('singleclick', function (evt) {
                 highlight.setStyle(RemoteHeardOpStyle);
             } else if (highlight.id_.includes("Operator")) {
                 highlight.setStyle(DirectHeardOPStyle);
+            } else if (highlight.id_.includes("Remote_Digipeater")) {
+                highlight.setStyle(RemoteDigiStyle);
             } else if (highlight.id_.includes("Digipeater")) {
                 highlight.setStyle(DirectHeardDigiStyle);
             }
@@ -392,6 +426,41 @@ map.on('singleclick', function (evt) {
                 "            <td>call</td>\n".replace("call", call) +
                 "            <td>grid</td>\n".replace("grid", grid) +
                 "            <td>last_check</td>\n".replace("last_check", node_formatted_last_check) +
+                "        </tr>\n" +
+                "        <!-- and so on... -->\n" +
+                "    </tbody>\n" +
+                "</table>"
+
+        } else if (feature_id.includes("Remote_Digipeaters")) {
+            feature_type = "Digipeaters";
+            const digi_last_heard = features.get("lastheard");
+            const digi_formatted_lh = new Date(digi_last_heard).toLocaleString();
+            let digi_direct_heard = features.get("heard");
+            const digi_ssid = features.get("ssid");
+
+            if (digi_direct_heard === true) {
+                digi_direct_heard = "Yes";
+            } else if (digi_direct_heard === false) {
+                digi_direct_heard = "No";
+            }
+
+            document.getElementById('info').innerHTML =
+                "<table class=\"styled-table\">\n" +
+                "    <thead>\n" +
+                "      <tr><th colspan='5' class='table-title'>Digipeater</th></tr>" +
+                "        <tr>\n" +
+                "            <th>Call</th>\n" +
+                "            <th>SSID</th>\n" +
+                "            <th>Grid</th>\n" +
+                "            <th>Last Heard</th>\n" +
+                "        </tr>\n" +
+                "    </thead>\n" +
+                "    <tbody>\n" +
+                "        <tr class=\"active-row\">\n" +
+                "            <td>call</td>\n".replace("call", call) +
+                "            <td>ssid</td>\n".replace("ssid", digi_ssid) +
+                "            <td>grid</td>\n".replace("grid", grid) +
+                "            <td>last_heard</td>\n".replace("last_heard", digi_formatted_lh) +
                 "        </tr>\n" +
                 "        <!-- and so on... -->\n" +
                 "    </tbody>\n" +
