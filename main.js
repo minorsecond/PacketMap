@@ -226,73 +226,7 @@ var featureOverlay = new VectorLayer({
     },
 });
 
-let selection = undefined;
-
 let highlight;
-const displayFeatureInfo = function (pixel) {
-    var feature = get_features;
-    NodeMap.getFeatures(pixel).then(function (features) {
-        feature = features.length ? features[0] : undefined;
-        const info = document.getElementById('info');
-        if (features.length) {
-            info.innerHTML = feature.getId() + ': ' + feature.get('call');
-        } else {
-            info.innerHTML = '&nbsp;';
-        }
-
-        if (feature !== highlight) {
-            if (highlight) {
-                highlight.style = DirectHeardOPStyle;
-            }
-            if (feature) {
-                feature.style = highlightStyle;
-            }
-            highlight = feature;
-        }
-    });
-    if (feature === undefined) {
-        OPMap.getFeatures(pixel).then(function (features) {
-              feature = features.length ? features[0] : undefined;
-            const info = document.getElementById('info');
-            if (features.length) {
-                info.innerHTML = feature.getId() + ': ' + feature.get('call');
-            } else {
-                info.innerHTML = '&nbsp;';
-            }
-
-            if (feature !== highlight) {
-                if (highlight) {
-                    feature.style = DirectHeardOPStyle;
-                }
-                if (feature) {
-                    feature.style = highlightStyle;
-                }
-                highlight = feature;
-            }
-        })
-    }
-    if (feature === undefined) {
-        DigiMap.getFeatures(pixel).then(function (features) {
-            feature = features.length ? features[0] : undefined;
-            const info = document.getElementById('info');
-            if (features.length) {
-                info.innerHTML = feature.getId() + ': ' + feature.get('call');
-            } else {
-                info.innerHTML = '&nbsp;';
-            }
-
-            if (feature !== highlight) {
-                if (highlight) {
-                    feature.style = DirectHeardOPStyle;
-                }
-                if (feature) {
-                    feature.style = highlightStyle;
-                }
-                highlight = feature;
-            }
-        })
-    }
-};
 
 function replace_band_order (stringList) {
     let res_list = "";
