@@ -131,7 +131,7 @@ const RemoteDigiStyle = new Style({
     image: new Circle({
         radius: 5,
         fill: new Fill({
-            color: 'rgba(255, 255, 51, 1.0)'
+            color: 'rgba(166, 86, 40, 1.0)'
         }),
     })
 });
