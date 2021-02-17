@@ -198,10 +198,12 @@ var NodeMap = new VectorLayer({
     style: NodeStyle,
 });
 
-const layerSwitcher = new LayerSwitcher({
+let layerSwitcher = new LayerSwitcher({
     reverse: true,
     groupSelectStyle: 'group'
 })
+
+layerSwitcher.useLegendGraphics = true;
 
 const view = new View({
     center: [-11686454,4832146],
@@ -294,6 +296,7 @@ const displayFeatureInfo = function (pixel) {
 
 function replace_band_order (stringList) {
     let res_list = "";
+    console.log(res_list);
     let split_list = stringList.split(',');
     for (let i = 0; i < split_list.length; i++) {
         let band = split_list[i]
@@ -350,9 +353,15 @@ map.on('singleclick', function (evt) {
             const call = features.get("remote_call");
             const digi_last_heard = features.get("lastheard");
             const digi_formatted_lh = new Date(digi_last_heard).toLocaleString();
-            // Remove leading & trailing commas
-            let bands = features.get("bands").replace(/(^,)|(,$)/g, "");
-            bands = replace_band_order(bands).replace(/,/g, ', ');  // 40CM, 2M, 20M, then 40M
+
+            let bands = features.get("bands")
+            if (bands !== undefined && bands !== null) {
+                console.log(bands);
+                bands = bands.replace(/(^,)|(,$)/g, "");
+                bands = replace_band_order(bands).replace(/,/g, ', ');  // 40CM, 2M, 20M, then 40M
+            } else {
+                bands = "Unknown";
+            }
 
             document.getElementById('info').innerHTML =
                 "<table class=\"styled-table\">\n" +
@@ -436,7 +445,11 @@ map.on('singleclick', function (evt) {
             const digi_last_heard = features.get("lastheard");
             const digi_formatted_lh = new Date(digi_last_heard).toLocaleString();
             let digi_direct_heard = features.get("heard");
-            const digi_ssid = features.get("ssid");
+            let digi_ssid = features.get("ssid");
+
+            if (digi_ssid === null || digi_ssid === undefined) {
+                digi_ssid = "None";
+            }
 
             if (digi_direct_heard === true) {
                 digi_direct_heard = "Yes";
@@ -506,5 +519,7 @@ map.on('singleclick', function (evt) {
         }
         console.log(feature_type);
         //displayFeatureInfo(evt.pixel);
+    } else {
+        console.log("Clicked on undefined feature");
     }
 });
