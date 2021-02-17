@@ -29,7 +29,23 @@ const WCMap = new TileLayer({
     })
 });
 
-const OPSource = new VectorSource({
+const RemoteOPSource = new VectorSource({
+    format: new GeoJSON(),
+    attributions: "| Robert Ross Wardrup | www.rwardrup.com",
+    url: function (extent) {
+        return (
+            'https://geo.spatstats.com/geoserver/ows?service=WFS&' +
+            'version=1.0.0&request=GetFeature&typename=PacketMap:Remote_Operators&' +
+            'outputFormat=application/json&srsname=EPSG:3857&' +
+            'bbox=' +
+            extent.join(',') +
+            ',EPSG:3857'
+        );
+    },
+    strategy: bboxStrategy,
+});
+
+const DirectHeardOPSource = new VectorSource({
     format: new GeoJSON(),
     attributions: "| Robert Ross Wardrup | www.rwardrup.com",
     url: function (extent) {
@@ -45,7 +61,7 @@ const OPSource = new VectorSource({
     strategy: bboxStrategy,
 });
 
-const digiSource = new VectorSource({
+const DirectHeardDigiSource = new VectorSource({
     format: new GeoJSON(),
     attributions: "| Robert Ross Wardrup | www.rwardrup.com",
     url: function (extent) {
@@ -81,12 +97,12 @@ const highlightStyle = new Style({
     image: new Circle({
         radius: 5,
         fill: new Fill({
-            color: 'rgba(255, 0, 0, 1.0)'
+            color: 'rgba(228, 26, 28, 1.0)'
         }),
     })
 });
 
-const OPSTyle = new Style({
+const RemoteHeardOpStyle = new Style({
     image: new Circle({
         radius: 5,
         fill: new Fill({
@@ -95,7 +111,7 @@ const OPSTyle = new Style({
     })
 });
 
-const DigiStyle = new Style({
+const DirectHeardOPStyle = new Style({
     image: new Circle({
         radius: 5,
         fill: new Fill({
@@ -104,7 +120,7 @@ const DigiStyle = new Style({
     })
 });
 
-const NodeStyle = new Style({
+const DirectHeardDigiStyle = new Style({
     image: new Circle({
         radius: 5,
         fill: new Fill({
@@ -113,18 +129,34 @@ const NodeStyle = new Style({
     })
 });
 
+const NodeStyle = new Style({
+    image: new Circle({
+        radius: 5,
+        fill: new Fill({
+            color: 'rgba(255, 127, 0, 1.0)'
+        }),
+    })
+});
+
+var RemoteOPMap = new VectorLayer({
+    title: 'Operators',
+    visible: true,
+    source: RemoteOPSource,
+    style: RemoteHeardOpStyle,
+});
+
 var OPMap = new VectorLayer({
     title: 'Local Operators',
     visible: true,
-    source: OPSource,
-    style: OPSTyle,
+    source: DirectHeardOPSource,
+    style: DirectHeardOPStyle,
 });
 
 var DigiMap = new VectorLayer({
     title: 'Local Digipeaters',
     visible: true,
-    source: digiSource,
-    style: DigiStyle,
+    source: DirectHeardDigiSource,
+    style: DirectHeardDigiStyle,
 });
 
 var NodeMap = new VectorLayer({
@@ -145,7 +177,7 @@ const view = new View({
 });
 
 const map = new Map({
-  layers: [OSMLayer, WCMap, NodeMap, DigiMap, OPMap],
+  layers: [OSMLayer, WCMap, RemoteOPMap, NodeMap, DigiMap, OPMap],
   target: 'map',
   view: view,
 });
@@ -176,7 +208,7 @@ const displayFeatureInfo = function (pixel) {
 
         if (feature !== highlight) {
             if (highlight) {
-                highlight.style = OPSTyle;
+                highlight.style = DirectHeardOPStyle;
             }
             if (feature) {
                 feature.style = highlightStyle;
@@ -196,7 +228,7 @@ const displayFeatureInfo = function (pixel) {
 
             if (feature !== highlight) {
                 if (highlight) {
-                    feature.style = OPSTyle;
+                    feature.style = DirectHeardOPStyle;
                 }
                 if (feature) {
                     feature.style = highlightStyle;
@@ -217,7 +249,7 @@ const displayFeatureInfo = function (pixel) {
 
             if (feature !== highlight) {
                 if (highlight) {
-                    feature.style = OPSTyle;
+                    feature.style = DirectHeardOPStyle;
                 }
                 if (feature) {
                     feature.style = highlightStyle;
@@ -226,8 +258,26 @@ const displayFeatureInfo = function (pixel) {
             }
         })
     }
-    console.log(feature)
 };
+
+function replace_band_order (stringList) {
+    let res_list = "";
+    let split_list = stringList.split(',');
+    for (let i = 0; i < split_list.length; i++) {
+        let band = split_list[i]
+        if (band === "70CM") {
+            res_list += band += ', ';
+        } else if (band === "2M") {
+            res_list += band += ', ';
+        } else if (band === "20M") {
+            res_list += band += ', ';
+        } else if (band === "40M") {
+            res_list += band += ', ';
+        }
+    }
+
+    return res_list.replace(/,\s*$/, "");
+}
 
 map.addControl(layerSwitcher);
 
@@ -242,10 +292,12 @@ map.on('singleclick', function (evt) {
         if (highlight) {
             if (highlight.id_.includes("Node")) {
                 highlight.setStyle(NodeStyle);
+            } else if (highlight.id_.includes("Remote_Operators")) {
+                highlight.setStyle(RemoteHeardOpStyle);
             } else if (highlight.id_.includes("Operator")) {
-                highlight.setStyle(OPSTyle);
+                highlight.setStyle(DirectHeardOPStyle);
             } else if (highlight.id_.includes("Digipeater")) {
-                highlight.setStyle(DigiStyle);
+                highlight.setStyle(DirectHeardDigiStyle);
             }
         }
         if (features) {
@@ -254,104 +306,136 @@ map.on('singleclick', function (evt) {
         }
         highlight = features;
     }
+    if (features !== undefined) {
+        const call = features.get("call");
+        const grid = features.get("grid");
+        const feature_id = features.id_;
 
-    const call = features.get("call");
-    const grid = features.get("grid");
-    const feature_id = features.id_;
+        if (feature_id.includes("Remote_Operators")) {
+            feature_type = "Remote Operator";
+            const call = features.get("remote_call");
+            const digi_last_heard = features.get("lastheard");
+            const digi_formatted_lh = new Date(digi_last_heard).toLocaleString();
+            // Remove leading & trailing commas
+            let bands = features.get("bands").replace(/(^,)|(,$)/g, "");
+            bands = replace_band_order(bands).replace(/,/g, ', ');  // 40CM, 2M, 20M, then 40M
 
-    if (feature_id.includes("Operators")) {
-        feature_type = "Operators";
-        const op_last_heard = features.get("lastheard");
-        const op_formatted_lh = new Date(op_last_heard).toLocaleString();
-        const op_grid = features.get("grid");
+            document.getElementById('info').innerHTML =
+                "<table class=\"styled-table\">\n" +
+                "    <thead>\n" +
+                "      <tr><th colspan='5' class='table-title'>Operator</th></tr>" +
+                "        <tr>\n" +
+                "            <th>Call</th>\n" +
+                "            <th>Grid</th>\n" +
+                "            <th>Bands\n</th>" +
+                "            <th>Last Heard</th>\n" +
+                "        </tr>\n" +
+                "    </thead>\n" +
+                "    <tbody>\n" +
+                "        <tr class=\"active-row\">\n" +
+                "            <td>call</td>\n".replace("call", call) +
+                "            <td>grid</td>\n".replace("grid", grid) +
+                "            <td>bands</td>\n".replace("bands", bands) +
+                "            <td>last_heard</td>\n".replace("last_heard", digi_formatted_lh) +
+                "        </tr>\n" +
+                "        <!-- and so on... -->\n" +
+                "    </tbody>\n" +
+                "</table>"
 
-        document.getElementById('info').innerHTML =
-            "<table class=\"styled-table\">\n" +
-            "    <thead>\n" +
-            "      <tr><th colspan='3' class='table-title'>Operator Heard Locally</th></tr>" +
-            "        <tr>\n" +
-            "            <th>Call</th>\n" +
-            "            <th>Grid</th>\n" +
-            "            <th>Last Heard</th>\n" +
-            "        </tr>\n" +
-            "    </thead>\n" +
-            "    <tbody>\n" +
-            "        <tr class=\"active-row\">\n" +
-            "            <td>call</td>\n".replace("call", call) +
-            "            <td>grid</td>\n".replace("grid", grid) +
-            "            <td>last_heard</td>\n".replace("last_heard", op_formatted_lh) +
-            "        </tr>\n" +
-            "        <!-- and so on... -->\n" +
-            "    </tbody>\n" +
-            "</table>";
+        } else if (feature_id.includes("Operators")) {
+            feature_type = "Operators";
+            const op_last_heard = features.get("lastheard");
+            const op_formatted_lh = new Date(op_last_heard).toLocaleString();
+            const op_grid = features.get("grid");
 
-    } else if (feature_id.includes("Nodes")) {
-        feature_type = "Nodes";
-        const node_p_call = features.get("parent_call");
-        const node_last_check = features.get("last_check");
-        const node_formatted_last_check = new Date(node_last_check).toLocaleString();
-        const node_ssid = features.get("ssid");
-        const node_path = features.get("path");
-        const node_level = features.get("level");
+            document.getElementById('info').innerHTML =
+                "<table class=\"styled-table\">\n" +
+                "    <thead>\n" +
+                "      <tr><th colspan='3' class='table-title'>Operator Heard Locally</th></tr>" +
+                "        <tr>\n" +
+                "            <th>Call</th>\n" +
+                "            <th>Grid</th>\n" +
+                "            <th>Last Heard</th>\n" +
+                "        </tr>\n" +
+                "    </thead>\n" +
+                "    <tbody>\n" +
+                "        <tr class=\"active-row\">\n" +
+                "            <td>call</td>\n".replace("call", call) +
+                "            <td>grid</td>\n".replace("grid", grid) +
+                "            <td>last_heard</td>\n".replace("last_heard", op_formatted_lh) +
+                "        </tr>\n" +
+                "        <!-- and so on... -->\n" +
+                "    </tbody>\n" +
+                "</table>";
 
-        document.getElementById('info').innerHTML =
-            "<table class=\"styled-table\">\n" +
-            "    <thead>\n" +
-            "      <tr><th colspan='3' class='table-title'>Node</th></tr>" +
-            "        <tr>\n" +
-            "            <th>Call</th>\n" +
-            "            <th>Grid</th>\n" +
-            "            <th>Last Check</th>\n" +
-            "        </tr>\n" +
-            "    </thead>\n" +
-            "    <tbody>\n" +
-            "        <tr class=\"active-row\">\n" +
-            "            <td>call</td>\n".replace("call", call) +
-            "            <td>grid</td>\n".replace("grid", grid) +
-            "            <td>last_check</td>\n".replace("last_check", node_formatted_last_check) +
-            "        </tr>\n" +
-            "        <!-- and so on... -->\n" +
-            "    </tbody>\n" +
-            "</table>"
+        } else if (feature_id.includes("Nodes")) {
+            feature_type = "Nodes";
+            const node_p_call = features.get("parent_call");
+            const node_last_check = features.get("last_check");
+            const node_formatted_last_check = new Date(node_last_check).toLocaleString();
+            const node_ssid = features.get("ssid");
+            const node_path = features.get("path");
+            const node_level = features.get("level");
 
-    } else if (feature_id.includes("Digipeaters")) {
-        feature_type = "Digipeaters";
-        const digi_last_heard = features.get("lastheard");
-        const digi_formatted_lh = new Date(digi_last_heard).toLocaleString();
-        let digi_direct_heard = features.get("heard");
-        const digi_ssid = features.get("ssid");
+            document.getElementById('info').innerHTML =
+                "<table class=\"styled-table\">\n" +
+                "    <thead>\n" +
+                "      <tr><th colspan='3' class='table-title'>Node</th></tr>" +
+                "        <tr>\n" +
+                "            <th>Call</th>\n" +
+                "            <th>Grid</th>\n" +
+                "            <th>Last Check</th>\n" +
+                "        </tr>\n" +
+                "    </thead>\n" +
+                "    <tbody>\n" +
+                "        <tr class=\"active-row\">\n" +
+                "            <td>call</td>\n".replace("call", call) +
+                "            <td>grid</td>\n".replace("grid", grid) +
+                "            <td>last_check</td>\n".replace("last_check", node_formatted_last_check) +
+                "        </tr>\n" +
+                "        <!-- and so on... -->\n" +
+                "    </tbody>\n" +
+                "</table>"
 
-        if (digi_direct_heard === true) {
-            digi_direct_heard = "Yes";
-        } else if (digi_direct_heard === false) {
-            digi_direct_heard = "No";
+        } else if (feature_id.includes("Digipeaters")) {
+            feature_type = "Digipeaters";
+            const digi_last_heard = features.get("lastheard");
+            const digi_formatted_lh = new Date(digi_last_heard).toLocaleString();
+            let digi_direct_heard = features.get("heard");
+            const digi_ssid = features.get("ssid");
+
+            if (digi_direct_heard === true) {
+                digi_direct_heard = "Yes";
+            } else if (digi_direct_heard === false) {
+                digi_direct_heard = "No";
+            }
+
+            document.getElementById('info').innerHTML =
+                "<table class=\"styled-table\">\n" +
+                "    <thead>\n" +
+                "      <tr><th colspan='5' class='table-title'>Digipeater</th></tr>" +
+                "        <tr>\n" +
+                "            <th>Call</th>\n" +
+                "            <th>SSID</th>\n" +
+                "            <th>Grid</th>\n" +
+                "            <th>Heard Directly</th>\n" +
+                "            <th>Last Heard</th>\n" +
+                "        </tr>\n" +
+                "    </thead>\n" +
+                "    <tbody>\n" +
+                "        <tr class=\"active-row\">\n" +
+                "            <td>call</td>\n".replace("call", call) +
+                "            <td>ssid</td>\n".replace("ssid", digi_ssid) +
+                "            <td>grid</td>\n".replace("grid", grid) +
+                "            <td>heard_directly</td>\n".replace("heard_directly", digi_direct_heard) +
+                "            <td>last_heard</td>\n".replace("last_heard", digi_formatted_lh) +
+                "        </tr>\n" +
+                "        <!-- and so on... -->\n" +
+                "    </tbody>\n" +
+                "</table>"
+
         }
-
-        document.getElementById('info').innerHTML =
-            "<table class=\"styled-table\">\n" +
-            "    <thead>\n" +
-            "      <tr><th colspan='5' class='table-title'>Digipeater</th></tr>" +
-            "        <tr>\n" +
-            "            <th>Call</th>\n" +
-            "            <th>SSID</th>\n" +
-            "            <th>Grid</th>\n" +
-            "            <th>Heard Directly</th>\n" +
-            "            <th>Last Heard</th>\n" +
-            "        </tr>\n" +
-            "    </thead>\n" +
-            "    <tbody>\n" +
-            "        <tr class=\"active-row\">\n" +
-            "            <td>call</td>\n".replace("call", call) +
-            "            <td>ssid</td>\n".replace("ssid", digi_ssid) +
-            "            <td>grid</td>\n".replace("grid", grid) +
-            "            <td>heard_directly</td>\n".replace("heard_directly", digi_direct_heard) +
-            "            <td>last_heard</td>\n".replace("last_heard", digi_formatted_lh) +
-            "        </tr>\n" +
-            "        <!-- and so on... -->\n" +
-            "    </tbody>\n" +
-            "</table>"
-
+        console.log(feature_type);
+        //displayFeatureInfo(evt.pixel);
     }
-    console.log(feature_type);
-    //displayFeatureInfo(evt.pixel);
 });
