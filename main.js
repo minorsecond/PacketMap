@@ -484,7 +484,13 @@ map.on('singleclick', function (evt) {
             const digi_last_heard = features.get("lastheard");
             const digi_formatted_lh = new Date(digi_last_heard).toLocaleString();
             let digi_direct_heard = features.get("heard");
-            const digi_ssid = features.get("ssid");
+            let digi_ssid = features.get("ssid");
+
+            if (digi_direct_heard === true) {
+                digi_direct_heard = "Yes";
+            } else if (digi_direct_heard === false) {
+                digi_direct_heard = "No";
+            }
 
             if (digi_direct_heard === true) {
                 digi_direct_heard = "Yes";
