@@ -463,3 +463,42 @@ map.on('singleclick', function (evt) {
         console.log("Clicked on undefined feature");
     }
 });
+
+// Build legend
+let RemoteOpLegendStyle = RemoteOPMap.getStyle();
+let RemoteOpLegendImage = RemoteHeardOpStyle.getImage();
+let ROLItem = {};
+
+if(RemoteOpLegendImage){
+    ROLItem = {};
+    ROLItem.style = RemoteOpLegendStyle;
+    ROLItem.title = RemoteOPMap.get('title');
+} else{
+    ROLItem = {};
+    ROLItem.style = style;
+    ROLItem.title = RemoteOPSource.get('title');
+}
+
+//geometry type
+let ROPFeats = RemoteOPMap.getSource().getFeatures();
+if (ROPFeats && ROPFeats.length>0){
+    ROLItem.geomType="point";
+}
+
+for (let i = 0; i < ROLItem.length; i++) {
+    let row = document.createElement("tr");
+    //symbol
+    let cell = document.createElement("td");
+    cell.style="width:35px";
+    var div = document.createElement("div");
+    div.style="width:32px; height:32px;";
+    div.id = "mapLegendRowSymbolDiv" + i;
+    tble.appendChild(row);
+    row.appendChild(cell);
+    cell.appendChild(div);
+    //layer title
+    cell = document.createElement("td");
+    tble.appendChild(row);
+    row.appendChild(cell);
+    cell.innerHTML=ROLItem[i].title;
+}
