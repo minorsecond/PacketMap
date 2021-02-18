@@ -12,6 +12,7 @@ import GeoJSON from 'ol/format/GeoJSON';
 import {Stroke, Style, Circle, Fill, Text} from 'ol/style';
 
 import LayerSwitcher from 'ol-layerswitcher';
+import {Point} from "ol/geom";
 
 const OSMLayer = new TileLayer({
     title: 'OSM',
@@ -306,6 +307,7 @@ map.on('singleclick', function (evt) {
                 "            <th>Grid</th>\n" +
                 "            <th>Bands\n</th>" +
                 "            <th>Last Heard</th>\n" +
+                "            <th></th>\n" +
                 "        </tr>\n" +
                 "    </thead>\n" +
                 "    <tbody>\n" +
@@ -314,6 +316,7 @@ map.on('singleclick', function (evt) {
                 "            <td>grid</td>\n".replace("grid", grid) +
                 "            <td>bands</td>\n".replace("bands", bands) +
                 "            <td>last_heard</td>\n".replace("last_heard", digi_formatted_lh) +
+                "            <td></td>"
                 "        </tr>\n" +
                 "        <!-- and so on... -->\n" +
                 "    </tbody>\n" +
@@ -399,7 +402,8 @@ map.on('singleclick', function (evt) {
                 "            <th>Call</th>\n" +
                 "            <th>SSID</th>\n" +
                 "            <th>Grid</th>\n" +
-                "            <th>Last Heard</th>\n" +
+                "            <th>Last RX</th>\n" +
+                "            <th></th>\n" +
                 "        </tr>\n" +
                 "    </thead>\n" +
                 "    <tbody>\n" +
@@ -408,6 +412,7 @@ map.on('singleclick', function (evt) {
                 "            <td>ssid</td>\n".replace("ssid", digi_ssid) +
                 "            <td>grid</td>\n".replace("grid", grid) +
                 "            <td>last_heard</td>\n".replace("last_heard", digi_formatted_lh) +
+                "            <td></td>"
                 "        </tr>\n" +
                 "        <!-- and so on... -->\n" +
                 "    </tbody>\n" +
@@ -441,7 +446,7 @@ map.on('singleclick', function (evt) {
                 "            <th>SSID</th>\n" +
                 "            <th>Grid</th>\n" +
                 "            <th>Heard Directly</th>\n" +
-                "            <th>Last Heard</th>\n" +
+                "            <th>Last RX</th>\n" +
                 "        </tr>\n" +
                 "    </thead>\n" +
                 "    <tbody>\n" +
@@ -465,40 +470,44 @@ map.on('singleclick', function (evt) {
 });
 
 // Build legend
-let RemoteOpLegendStyle = RemoteOPMap.getStyle();
-let RemoteOpLegendImage = RemoteHeardOpStyle.getImage();
-let ROLItem = {};
-
-if(RemoteOpLegendImage){
-    ROLItem = {};
-    ROLItem.style = RemoteOpLegendStyle;
-    ROLItem.title = RemoteOPMap.get('title');
-} else{
-    ROLItem = {};
-    ROLItem.style = style;
-    ROLItem.title = RemoteOPSource.get('title');
-}
-
-//geometry type
-let ROPFeats = RemoteOPMap.getSource().getFeatures();
-if (ROPFeats && ROPFeats.length>0){
-    ROLItem.geomType="point";
-}
-
-for (let i = 0; i < ROLItem.length; i++) {
-    let row = document.createElement("tr");
-    //symbol
-    let cell = document.createElement("td");
-    cell.style="width:35px";
-    var div = document.createElement("div");
-    div.style="width:32px; height:32px;";
-    div.id = "mapLegendRowSymbolDiv" + i;
-    tble.appendChild(row);
-    row.appendChild(cell);
-    cell.appendChild(div);
-    //layer title
-    cell = document.createElement("td");
-    tble.appendChild(row);
-    row.appendChild(cell);
-    cell.innerHTML=ROLItem[i].title;
+window.onload = function () {
+    document.getElementById('map-legend').innerHTML =
+        "<table class=\"styled-legend\">\n" +
+        "    <thead>\n" +
+        "      <tr><th colspan='3' class='table-title'>Legend</th></tr>" +
+        "        <tr>\n" +
+        "            <th></th>\n" +
+        "            <th></th>\n" +
+        "            <th></th>\n" +
+        "        </tr>" +
+        "    </thead>\n" +
+        "    <tbody>\n" +
+        "        <tr class=\"active-row\">\n" +
+        "            <td><span class=\"local-op-dot\"></span></td>\n" +
+        "            <td>Local Operator</td>" +
+        "            <td></td>" +
+        "        </tr>\n" +
+        "        <tr class=\"active-row\">\n" +
+        "            <td><span class=\"local-digi-dot\"></span></td>\n" +
+        "            <td>Local Digipeater</td>\n" +
+        "            <td></td>" +
+        "        </tr>" +
+        "        <tr class=\"active-row\">\n" +
+        "            <td><span class=\"node-dot\"></span></td>\n" +
+        "            <td>Node</td>\n" +
+        "            <td></td>" +
+        "        </tr>" +
+        "        <tr class=\"active-row\">\n" +
+        "            <td><span class=\"remote-digi-dot\"></span></td>\n" +
+        "            <td>Digipeater</td>\n" +
+        "            <td></td>" +
+        "        </tr>" +
+        "        <tr class=\"active-row\">\n" +
+        "            <td><span class=\"remote-op-dot\"></span></td>\n" +
+        "            <td>Operator</td>\n" +
+        "            <td></td>" +
+        "        </tr>" +
+        "        </tr>\n" +
+        "    </tbody>\n" +
+        "</table>"
 }

@@ -54,3 +54,86 @@ body {
     border-left: 2px solid #009879;
     border-right: 2px solid #009879;
 }
+
+.styled-legend {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 200px;
+    height: 200px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-legend thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+    border-left: 2px solid #009879;
+    border-right: 2px solid #009879;
+}
+
+.styled-legend th,
+.styled-legend td {
+    padding: 12px 15px;
+}
+
+.styled-legend tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-legend tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-legend tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+.styled-legend tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+    background-color: #ffffff;
+    border-left: 2px solid #009879;
+    border-right: 2px solid #009879;
+}
+
+.local-op-dot {
+    height: 10px;
+    width: 10px;
+    background-color: rgba(77, 175, 74, 1.0);
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.local-digi-dot {
+    height: 10px;
+    width: 10px;
+    background-color: rgba(166, 86, 40, 1.0);
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.node-dot {
+    height: 10px;
+    width: 10px;
+    background-color: rgba(255, 127, 0, 1.0);
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.remote-digi-dot {
+    height: 10px;
+    width: 10px;
+    background-color: rgba(166, 86, 40, 1.0);
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.remote-op-dot {
+    height: 10px;
+    width: 10px;
+    background-color: rgba(55, 126, 184, 1.0);
+    border-radius: 50%;
+    display: inline-block;
+}
