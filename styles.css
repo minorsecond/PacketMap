@@ -109,7 +109,7 @@ body {
 .local-digi-dot {
     height: 10px;
     width: 10px;
-    background-color: rgba(166, 86, 40, 1.0);
+    background-color: rgba(152, 78, 163, 1.0);
     border-radius: 50%;
     display: inline-block;
 }
