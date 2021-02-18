@@ -197,7 +197,7 @@ var DigiMap = new VectorLayer({
 });
 
 var NodeMap = new VectorLayer({
-    title: 'Nodes',
+    title: 'NET/ROM Nodes',
     visible: true,
     source: nodeSource,
     style: NodeStyle,
@@ -315,7 +315,7 @@ map.on('singleclick', function (evt) {
                 "            <th>Call</th>\n" +
                 "            <th>Grid</th>\n" +
                 "            <th>Bands\n</th>" +
-                "            <th>Last Heard</th>\n" +
+                "            <th>Last Seen</th>\n" +
                 "            <th></th>\n" +
                 "        </tr>\n" +
                 "    </thead>\n" +
@@ -503,7 +503,7 @@ window.onload = function () {
         "        </tr>" +
         "        <tr class=\"active-row\">\n" +
         "            <td><span class=\"node-dot\"></span></td>\n" +
-        "            <td>Node</td>\n" +
+        "            <td>NET/ROM Node</td>\n" +
         "            <td></td>" +
         "        </tr>" +
         "        <tr class=\"active-row\">\n" +
