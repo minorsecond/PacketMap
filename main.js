@@ -1,25 +1,24 @@
 import 'ol/ol.css';
 import 'ol-layerswitcher/dist/ol-layerswitcher.css';
-import TileWMS from 'ol/source/TileWMS';
+import LayerGroup from 'ol/layer/Group'
 import Map from 'ol/Map';
 import OSM from 'ol/source/OSM';
 import SourceStamen from 'ol/source/Stamen';
 import View from 'ol/View';
 import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
-import {bbox as bboxStrategy, all as allStrategy} from 'ol/loadingstrategy'
+import {bbox as bboxStrategy} from 'ol/loadingstrategy'
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
-import {Stroke, Style, Circle, Fill, Text} from 'ol/style';
+import {Style, Circle, Fill, Text} from 'ol/style';
 
-import LayerSwitcher from 'ol-layerswitcher';
-import {Point} from "ol/geom";
+import LayerSwitcher, {GroupLayerOptions} from 'ol-layerswitcher';
 
 const OSMLayer = new TileLayer({
     title: 'OSM',
     type: 'base',
     visible: true,
-    source: new OSM(),
-});
+    source: new OSM()
+})
 
 const WCMap = new TileLayer({
     title: 'Watercolor',
@@ -28,7 +27,12 @@ const WCMap = new TileLayer({
     source: new SourceStamen({
         layer: 'watercolor'
     })
-});
+})
+
+const baseMaps = new LayerGroup({
+    title: "Basemaps",
+    layers: [OSMLayer, WCMap]
+})
 
 const RemoteOPSource = new VectorSource({
     format: new GeoJSON(),
@@ -199,6 +203,11 @@ var NodeMap = new VectorLayer({
     style: NodeStyle,
 });
 
+const vectorLayers = new LayerGroup({
+    title: "Packet Stations",
+    layers: [RemoteOPMap, RemoteDigiMap, NodeMap, DigiMap, OPMap]
+})
+
 let layerSwitcher = new LayerSwitcher({
     reverse: true,
     groupSelectStyle: 'group'
@@ -212,7 +221,7 @@ const view = new View({
 });
 
 const map = new Map({
-  layers: [OSMLayer, WCMap, RemoteOPMap, RemoteDigiMap, NodeMap, DigiMap, OPMap],
+  layers: [baseMaps, vectorLayers],
   target: 'map',
   view: view,
 });
