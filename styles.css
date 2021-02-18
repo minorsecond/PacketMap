@@ -61,7 +61,6 @@ body {
     font-size: 0.9em;
     font-family: sans-serif;
     min-width: 200px;
-    height: 200px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
@@ -69,13 +68,14 @@ body {
     background-color: #009879;
     color: #ffffff;
     text-align: left;
+    height: .5em;
     border-left: 2px solid #009879;
     border-right: 2px solid #009879;
 }
 
 .styled-legend th,
 .styled-legend td {
-    padding: 12px 15px;
+    padding: 8px 10px;
 }
 
 .styled-legend tbody tr {
@@ -96,6 +96,7 @@ body {
     background-color: #ffffff;
     border-left: 2px solid #009879;
     border-right: 2px solid #009879;
+    border-bottom: none;
 }
 
 .local-op-dot {
