@@ -440,10 +440,8 @@ map.on('singleclick', function (evt) {
                 digi_direct_heard = "No";
             }
 
-            if (digi_direct_heard === true) {
-                digi_direct_heard = "Yes";
-            } else if (digi_direct_heard === false) {
-                digi_direct_heard = "No";
+            if (digi_ssid === null || digi_ssid === undefined) {
+                digi_ssid = "None"
             }
 
             document.getElementById('info').innerHTML =
