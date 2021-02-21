@@ -4,12 +4,13 @@ import LayerGroup from 'ol/layer/Group'
 import Map from 'ol/Map';
 import OSM from 'ol/source/OSM';
 import SourceStamen from 'ol/source/Stamen';
+import TileWMS from 'ol/source/TileWMS'
 import View from 'ol/View';
 import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
 import {bbox as bboxStrategy} from 'ol/loadingstrategy'
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
-import {Style, Circle, Fill, Text} from 'ol/style';
+import {Style, Circle, Fill, Stroke} from 'ol/style';
 
 import LayerSwitcher, {GroupLayerOptions} from 'ol-layerswitcher';
 
@@ -33,6 +34,20 @@ const baseMaps = new LayerGroup({
     title: "Basemaps",
     layers: [OSMLayer, WCMap]
 })
+
+const OPNetworkMap = new TileLayer({
+        title: 'Node Network',
+        visible: false,
+        source: new TileWMS({
+            url: 'https://geo.spatstats.com/geoserver/PacketMap/wms',
+            params: {'LAYERS': 'PacketMap:Operator_Network',
+                'TILED': true,
+                'VERSION': '1.1.1',
+            },
+            serverType: 'geoserver',
+            ratio: 1
+        }),
+    });
 
 const RemoteOPSource = new VectorSource({
     format: new GeoJSON(),
@@ -123,6 +138,15 @@ const highlightStyle = new Style({
     })
 });
 
+const OPNetworkStyle = new Style({
+    image: new Circle({
+        radius: 5,
+        stroke: new Stroke({
+            color: 'rgba(55, 126, 184, 1.0)'
+        }),
+    })
+});
+
 const RemoteHeardOpStyle = new Style({
     image: new Circle({
         radius: 5,
@@ -205,7 +229,7 @@ var NodeMap = new VectorLayer({
 
 const vectorLayers = new LayerGroup({
     title: "Packet Stations",
-    layers: [RemoteOPMap, RemoteDigiMap, NodeMap, DigiMap, OPMap]
+    layers: [OPNetworkMap, RemoteOPMap, RemoteDigiMap, NodeMap, DigiMap, OPMap]
 })
 
 let layerSwitcher = new LayerSwitcher({
