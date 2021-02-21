@@ -40,7 +40,7 @@ const OPNetworkMap = new TileLayer({
         visible: false,
         source: new TileWMS({
             url: 'https://geo.spatstats.com/geoserver/PacketMap/wms',
-            params: {'LAYERS': 'PacketMap:Operator_Network',
+            params: {'LAYERS': 'PacketMap:VUHF_Network',
                 'TILED': true,
                 'VERSION': '1.1.1',
             },
@@ -134,15 +134,6 @@ const highlightStyle = new Style({
         radius: 5,
         fill: new Fill({
             color: 'rgba(228, 26, 28, 1.0)'
-        }),
-    })
-});
-
-const OPNetworkStyle = new Style({
-    image: new Circle({
-        radius: 5,
-        stroke: new Stroke({
-            color: 'rgba(55, 126, 184, 1.0)'
         }),
     })
 });
