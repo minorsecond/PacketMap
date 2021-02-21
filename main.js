@@ -386,7 +386,7 @@ map.on('singleclick', function (evt) {
                 "            <td>grid</td>\n".replace("grid", grid) +
                 "            <td>bands</td>\n".replace("bands", bands) +
                 "            <td>last_heard</td>\n".replace("last_heard", digi_formatted_lh) +
-                "            <td></td>"
+                "            <td></td>" +
                 "        </tr>\n" +
                 "        <!-- and so on... -->\n" +
                 "    </tbody>\n" +
@@ -482,7 +482,7 @@ map.on('singleclick', function (evt) {
                 "            <td>ssid</td>\n".replace("ssid", digi_ssid) +
                 "            <td>grid</td>\n".replace("grid", grid) +
                 "            <td>last_heard</td>\n".replace("last_heard", digi_formatted_lh) +
-                "            <td></td>"
+                "            <td></td>" +
                 "        </tr>\n" +
                 "        <!-- and so on... -->\n" +
                 "    </tbody>\n" +
