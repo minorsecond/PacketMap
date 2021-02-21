@@ -35,18 +35,20 @@ const baseMaps = new LayerGroup({
     layers: [OSMLayer, WCMap]
 })
 
-const OPNetworkMap = new TileLayer({
-        title: 'Node Network',
+const VUHFNetworkSource = new TileWMS({
+    url: 'https://geo.spatstats.com/geoserver/PacketMap/wms',
+    params: {'LAYERS': 'PacketMap:VUHF_Network',
+        'TILED': true,
+        'VERSION': '1.1.1',
+    },
+    serverType: 'geoserver',
+    ratio: 1
+})
+
+const VUHFNetworkMap = new TileLayer({
+        title: 'V/UHF Node Network',
         visible: false,
-        source: new TileWMS({
-            url: 'https://geo.spatstats.com/geoserver/PacketMap/wms',
-            params: {'LAYERS': 'PacketMap:VUHF_Network',
-                'TILED': true,
-                'VERSION': '1.1.1',
-            },
-            serverType: 'geoserver',
-            ratio: 1
-        }),
+        source: VUHFNetworkSource,
     });
 
 const RemoteOPSource = new VectorSource({
@@ -220,7 +222,7 @@ var NodeMap = new VectorLayer({
 
 const vectorLayers = new LayerGroup({
     title: "Packet Stations",
-    layers: [OPNetworkMap, RemoteOPMap, RemoteDigiMap, NodeMap, DigiMap, OPMap]
+    layers: [VUHFNetworkMap, RemoteOPMap, RemoteDigiMap, NodeMap, DigiMap, OPMap]
 })
 
 let layerSwitcher = new LayerSwitcher({
@@ -281,6 +283,50 @@ map.on('singleclick', function (evt) {
     let features = map.forEachFeatureAtPixel(evt.pixel, function (feature) {
         return feature;
     });
+
+    const viewResolution = /** @type {number} */ (view.getResolution());
+    const VUHFPathInfo = VUHFNetworkSource.getFeatureInfoUrl(
+        evt.coordinate,
+        viewResolution,
+        'EPSG:3857',
+        {'INFO_FORMAT': 'application/json'}
+    )
+
+    if (VUHFPathInfo && VUHFNetworkMap.getVisible() === true) {
+        fetch(VUHFPathInfo)
+            .then(function (response) { return response.text(); })
+            .then(function (json) {
+                let inf = JSON.parse(json).features;
+                console.log(inf)
+                if (inf.length > 0) {
+                    inf = inf[0].properties
+                    const call_a = inf.call_a;
+                    const call_b = inf.call_b;
+                    const parent_node = inf.parent_call;
+
+                    document.getElementById('info').innerHTML =
+                        "<table class=\"styled-table\">\n" +
+                        "    <thead>\n" +
+                        "      <tr><th colspan='3' class='table-title'>Path Members</th></tr>" +
+                        "        <tr>\n" +
+                        "            <th>Call A</th>\n" +
+                        "            <th>Call B</th>\n" +
+                        "            <th>Via</th>\n" +
+                        "        </tr>\n" +
+                        "    </thead>\n" +
+                        "    <tbody>\n" +
+                        "        <tr class=\"active-row\">\n" +
+                        "            <td>call</td>\n".replace("call", call_a) +
+                        "            <td>call</td>\n".replace("call", call_b) +
+                        "            <td>via</td>\n".replace("via", parent_node) +
+                        "        </tr>\n" +
+                        "        <!-- and so on... -->\n" +
+                        "    </tbody>\n" +
+                        "</table>";
+
+                }
+            })
+    }
 
     if (features !== highlight) {
         if (highlight) {
