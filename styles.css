@@ -137,3 +137,9 @@ body {
     border-radius: 50%;
     display: inline-block;
 }
+
+.vuhf-net-path {
+    width: 10px;
+    height: 2px;
+    background-color: rgba(153, 153, 153, 1);
+}

@@ -529,6 +529,11 @@ window.onload = function () {
         "            <td>Operator</td>\n" +
         "            <td></td>" +
         "        </tr>" +
+        "        <tr class=\"active-row\">\n" +
+        "            <td><hr class='vuhf-net-path'</td>\n" +
+        "            <td>V/UHF Network Path</td>\n" +
+        "            <td></td>" +
+        "        </tr>"
         "        </tr>\n" +
         "    </tbody>\n" +
         "</table>"
