@@ -357,7 +357,8 @@ map.on('singleclick', function (evt) {
             feature_type = "Remote Operator";
             const call = features.get("remote_call");
             const digi_last_heard = features.get("lastheard");
-            const digi_formatted_lh = new Date(digi_last_heard).toLocaleString();
+            const digi_formatted_lh = new Date(digi_last_heard).toLocaleString('en-US',
+                {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'});
 
             let bands = features.get("bands")
             if (bands !== undefined && bands !== null) {
@@ -395,7 +396,8 @@ map.on('singleclick', function (evt) {
         } else if (feature_id.includes("Operators")) {
             feature_type = "Operators";
             const op_last_heard = features.get("lastheard");
-            const op_formatted_lh = new Date(op_last_heard).toLocaleString();
+            const op_formatted_lh = new Date(op_last_heard).toLocaleString('en-US',
+                {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'});
             const op_grid = features.get("grid");
 
             document.getElementById('info').innerHTML =
@@ -422,7 +424,8 @@ map.on('singleclick', function (evt) {
             feature_type = "Nodes";
             const node_p_call = features.get("parent_call");
             const node_last_check = features.get("last_check");
-            const node_formatted_last_check = new Date(node_last_check).toLocaleString();
+            const node_formatted_last_check = new Date(node_last_check).toLocaleString('en-US',
+                {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'});
             const node_ssid = features.get("ssid");
             const node_path = features.get("path");
             const node_level = features.get("level");
@@ -450,7 +453,8 @@ map.on('singleclick', function (evt) {
         } else if (feature_id.includes("Remote_Digipeaters")) {
             feature_type = "Digipeaters";
             const digi_last_heard = features.get("lastheard");
-            const digi_formatted_lh = new Date(digi_last_heard).toLocaleString();
+            const digi_formatted_lh = new Date(digi_last_heard).toLocaleString('en-US',
+                {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'});
             let digi_direct_heard = features.get("heard");
             let digi_ssid = features.get("ssid");
 
@@ -491,7 +495,8 @@ map.on('singleclick', function (evt) {
         } else if (feature_id.includes("Digipeaters")) {
             feature_type = "Digipeaters";
             const digi_last_heard = features.get("lastheard");
-            const digi_formatted_lh = new Date(digi_last_heard).toLocaleString();
+            const digi_formatted_lh = new Date(digi_last_heard).toLocaleString('en-US',
+                {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'});
             let digi_direct_heard = features.get("heard");
             let digi_ssid = features.get("ssid");
 
