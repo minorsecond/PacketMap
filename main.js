@@ -15,24 +15,10 @@ import {Style, Circle, Fill, Stroke} from 'ol/style';
 import LayerSwitcher, {GroupLayerOptions} from 'ol-layerswitcher';
 
 const OSMLayer = new TileLayer({
-    title: 'OSM',
     type: 'base',
     visible: true,
+    displayInLayerSwitcher: false,
     source: new OSM()
-})
-
-const WCMap = new TileLayer({
-    title: 'Watercolor',
-    type: 'base',
-    visible: false,
-    source: new SourceStamen({
-        layer: 'watercolor'
-    })
-})
-
-const baseMaps = new LayerGroup({
-    title: "Basemaps",
-    layers: [OSMLayer, WCMap]
 })
 
 const VUHFNetworkSource = new TileWMS({
@@ -238,7 +224,7 @@ const view = new View({
 });
 
 const map = new Map({
-  layers: [baseMaps, vectorLayers],
+  layers: [OSMLayer, vectorLayers],
   target: 'map',
   view: view,
 });
