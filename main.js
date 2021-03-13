@@ -382,7 +382,7 @@ map.on('singleclick', function (evt) {
                 "        <tr>\n" +
                 "            <th>Call</th>\n" +
                 "            <th>Grid</th>\n" +
-                "            <th>Bands\n</th>" +
+                "            <th>Heard On\n</th>" +
                 "            <th>Last Seen</th>\n" +
                 "            <th></th>\n" +
                 "        </tr>\n" +
