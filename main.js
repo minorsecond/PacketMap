@@ -467,7 +467,7 @@ map.on('singleclick', function (evt) {
                 if (/^7\.\d*$/.test(digi_port_part) ||
                     /^14\.\d*$/.test(digi_port_part) ||
                     /^14.\.\d*$/.test(digi_port_part) ||
-                    /^4.\.\d*$/.test(digi_port_part)) {
+                    /^44.\.\d*$/.test(digi_port_part)) {
                     digi_frequency = digi_port_part + " Mhz"
                 }
             }
