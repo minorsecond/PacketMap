@@ -239,6 +239,24 @@ var featureOverlay = new VectorLayer({
     },
 });
 
+function get_frequency (port_name) {
+    // Try to get frequency from port name
+
+    let digi_frequency = 'Unknown';
+    for (let i=0; i < port_name.length; i++) {
+        const port_name_part = port_name[i];
+        console.log(port_name_part);
+        if (/^7\.\d*$/.test(port_name_part) ||
+            /^14\.\d*$/.test(port_name_part) ||
+            /^14.\.\d*$/.test(port_name_part) ||
+            /^44.\.\d*$/.test(port_name_part)) {
+            digi_frequency = port_name_part + " Mhz"
+        }
+    }
+
+    return digi_frequency;
+}
+
 let highlight;
 
 function replace_band_order (stringList) {
@@ -446,17 +464,7 @@ map.on('singleclick', function (evt) {
 
             // Try to get digi frequency from port name
             const digi_port = features.get('port').split(" ");
-            let digi_frequency = 'Unknown';
-            for (let i=0; i < digi_port.length; i++) {
-                const digi_port_part = digi_port[i];
-                console.log(digi_port_part);
-                if (/^7\.\d*$/.test(digi_port_part) ||
-                    /^14\.\d*$/.test(digi_port_part) ||
-                    /^14.\.\d*$/.test(digi_port_part) ||
-                    /^44.\.\d*$/.test(digi_port_part)) {
-                    digi_frequency = digi_port_part + " Mhz"
-                }
-            }
+            const digi_frequency = get_frequency(digi_port);
 
             if (digi_ssid === null || digi_ssid === undefined) {
                 digi_ssid = "None";
