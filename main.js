@@ -460,13 +460,14 @@ map.on('singleclick', function (evt) {
 
             // Try to get digi frequency from port name
             const digi_port = features.get('port').split(" ");
-            let digi_frequency = '';
+            let digi_frequency = 'Unknown';
             for (let i=0; i < digi_port.length; i++) {
                 const digi_port_part = digi_port[i];
+                console.log(digi_port_part);
                 if (/^7\.\d*$/.test(digi_port_part) ||
                     /^14\.\d*$/.test(digi_port_part) ||
-                    /^14*\.\d*$/.test(digi_port_part) ||
-                    /^4*\.\d*$/.test(digi_port_part)) {
+                    /^14.\.\d*$/.test(digi_port_part) ||
+                    /^4.\.\d*$/.test(digi_port_part)) {
                     digi_frequency = digi_port_part + " Mhz"
                 }
             }
