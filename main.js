@@ -458,6 +458,19 @@ map.on('singleclick', function (evt) {
             let digi_direct_heard = features.get("heard");
             let digi_ssid = features.get("ssid");
 
+            // Try to get digi frequency from port name
+            const digi_port = features.get('port').split(" ");
+            let digi_frequency = '';
+            for (let i=0; i < digi_port.length; i++) {
+                const digi_port_part = digi_port[i];
+                if (/^7\.\d*$/.test(digi_port_part) ||
+                    /^14\.\d*$/.test(digi_port_part) ||
+                    /^14*\.\d*$/.test(digi_port_part) ||
+                    /^4*\.\d*$/.test(digi_port_part)) {
+                    digi_frequency = digi_port_part + " Mhz"
+                }
+            }
+
             if (digi_ssid === null || digi_ssid === undefined) {
                 digi_ssid = "None";
             }
@@ -471,11 +484,12 @@ map.on('singleclick', function (evt) {
             document.getElementById('info').innerHTML =
                 "<table class=\"styled-table\">\n" +
                 "    <thead>\n" +
-                "      <tr><th colspan='5' class='table-title'>Digipeater</th></tr>" +
+                "      <tr><th colspan='6' class='table-title'>Digipeater</th></tr>" +
                 "        <tr>\n" +
                 "            <th>Call</th>\n" +
                 "            <th>SSID</th>\n" +
                 "            <th>Grid</th>\n" +
+                "            <th>Freq.</th>\n" +
                 "            <th>Last RX</th>\n" +
                 "            <th></th>\n" +
                 "        </tr>\n" +
@@ -485,6 +499,7 @@ map.on('singleclick', function (evt) {
                 "            <td>call</td>\n".replace("call", call) +
                 "            <td>ssid</td>\n".replace("ssid", digi_ssid) +
                 "            <td>grid</td>\n".replace("grid", grid) +
+                "            <td>freq</td>\n".replace("freq", digi_frequency) +
                 "            <td>last_heard</td>\n".replace("last_heard", digi_formatted_lh) +
                 "            <td></td>" +
                 "        </tr>\n" +
