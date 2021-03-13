@@ -245,7 +245,6 @@ function get_frequency (port_name) {
     let digi_frequency = 'Unknown';
     for (let i=0; i < port_name.length; i++) {
         const port_name_part = port_name[i];
-        console.log(port_name_part);
         if (/^7\.\d*$/.test(port_name_part) ||
             /^14\.\d*$/.test(port_name_part) ||
             /^14.\.\d*$/.test(port_name_part) ||
@@ -364,9 +363,12 @@ map.on('singleclick', function (evt) {
             const digi_formatted_lh = new Date(digi_last_heard).toLocaleString('en-US',
                 {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'});
 
+            const port_name = features.get('port').split(" ");
+            const frequency = get_frequency(port_name);
+            console.log(frequency);
+
             let bands = features.get("bands")
             if (bands !== undefined && bands !== null) {
-                console.log(bands);
                 bands = bands.replace(/(^,)|(,$)/g, "");
                 bands = replace_band_order(bands).replace(/,/g, ', ');  // 40CM, 2M, 20M, then 40M
             } else {
@@ -463,7 +465,8 @@ map.on('singleclick', function (evt) {
             let digi_ssid = features.get("ssid");
 
             // Try to get digi frequency from port name
-            const digi_port = features.get('port').split(" ");
+            console.log(features.get('last_port'));
+            const digi_port = features.get('last_port').split(" ");
             const digi_frequency = get_frequency(digi_port);
 
             if (digi_ssid === null || digi_ssid === undefined) {
