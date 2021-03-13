@@ -465,7 +465,6 @@ map.on('singleclick', function (evt) {
             let digi_ssid = features.get("ssid");
 
             // Try to get digi frequency from port name
-            console.log(features.get('last_port'));
             const digi_port = features.get('last_port').split(" ");
             const digi_frequency = get_frequency(digi_port);
 
