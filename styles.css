@@ -143,3 +143,10 @@ body {
     height: 2px;
     background-color: rgba(153, 153, 153, 1);
 }
+
+.boxed {
+    color: #009879;
+    background-color: #ffffff;
+    border: 2px solid #009879;
+    padding: 4px;
+}
