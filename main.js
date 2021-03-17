@@ -39,7 +39,7 @@ const VUHFNetworkMap = new TileLayer({
 
 const RemoteOPSource = new VectorSource({
     format: new GeoJSON(),
-    attributions: "| Robert Ross Wardrup | www.rwardrup.com",
+    attributions: "| R.R. Wardrup | www.rwardrup.com",
     url: function (extent) {
         return (
             'https://geo.spatstats.com/geoserver/ows?service=WFS&' +
@@ -55,7 +55,7 @@ const RemoteOPSource = new VectorSource({
 
 const RemoteDigiSource = new VectorSource({
     format: new GeoJSON(),
-    attributions: "| Robert Ross Wardrup | www.rwardrup.com",
+    attributions: "| R.R. Wardrup | www.rwardrup.com",
     url: function (extent) {
         return (
             'https://geo.spatstats.com/geoserver/ows?service=WFS&' +
@@ -71,7 +71,7 @@ const RemoteDigiSource = new VectorSource({
 
 const DirectHeardOPSource = new VectorSource({
     format: new GeoJSON(),
-    attributions: "| Robert Ross Wardrup | www.rwardrup.com",
+    attributions: "| R.R. Wardrup | www.rwardrup.com",
     url: function (extent) {
         return (
             'https://geo.spatstats.com/geoserver/ows?service=WFS&' +
@@ -87,7 +87,7 @@ const DirectHeardOPSource = new VectorSource({
 
 const DirectHeardDigiSource = new VectorSource({
     format: new GeoJSON(),
-    attributions: "| Robert Ross Wardrup | www.rwardrup.com",
+    attributions: "| R.R. Wardrup | www.rwardrup.com",
     url: function (extent) {
         return (
             'https://geo.spatstats.com/geoserver/ows?service=WFS&' +
@@ -103,7 +103,7 @@ const DirectHeardDigiSource = new VectorSource({
 
 const nodeSource = new VectorSource({
     format: new GeoJSON(),
-    attributions: "| Robert Ross Wardrup | www.rwardrup.com",
+    attributions: "| R.R. Wardrup | www.rwardrup.com",
     url: function (extent) {
         return (
             'https://geo.spatstats.com/geoserver/ows?service=WFS&' +
