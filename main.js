@@ -389,7 +389,7 @@ map.on('singleclick', function (evt) {
                 "    </thead>\n" +
                 "    <tbody>\n" +
                 "        <tr class=\"active-row\">\n" +
-                "            <td>call</td>\n".replace("call", call) +
+                "            <td><a href=\https://www.qrz.com/db/call target='_blank' \>call</a></td>\n".replaceAll("call", call) +
                 "            <td>grid</td>\n".replace("grid", grid) +
                 "            <td>bands</td>\n".replace("bands", bands) +
                 "            <td>last_heard</td>\n".replace("last_heard", digi_formatted_lh) +
@@ -418,7 +418,7 @@ map.on('singleclick', function (evt) {
                 "    </thead>\n" +
                 "    <tbody>\n" +
                 "        <tr class=\"active-row\">\n" +
-                "            <td>call</td>\n".replace("call", call) +
+                "            <td><a href=\https://www.qrz.com/db/call target='_blank' \>call</a></td>\n".replaceAll("call", call) +
                 "            <td>grid</td>\n".replace("grid", grid) +
                 "            <td>last_heard</td>\n".replace("last_heard", op_formatted_lh) +
                 "        </tr>\n" +
@@ -448,7 +448,7 @@ map.on('singleclick', function (evt) {
                 "    </thead>\n" +
                 "    <tbody>\n" +
                 "        <tr class=\"active-row\">\n" +
-                "            <td>call</td>\n".replace("call", call) +
+                "            <td><a href=\https://www.qrz.com/db/call target='_blank' \>call</a></td>\n".replaceAll("call", call) +
                 "            <td>grid</td>\n".replace("grid", grid) +
                 "            <td>last_check</td>\n".replace("last_check", node_formatted_last_check) +
                 "        </tr>\n" +
@@ -493,7 +493,7 @@ map.on('singleclick', function (evt) {
                 "    </thead>\n" +
                 "    <tbody>\n" +
                 "        <tr class=\"active-row\">\n" +
-                "            <td>call</td>\n".replace("call", call) +
+                "            <td><a href=\https://www.qrz.com/db/call target='_blank' \>call</a></td>\n".replaceAll("call", call) +
                 "            <td>ssid</td>\n".replace("ssid", digi_ssid) +
                 "            <td>grid</td>\n".replace("grid", grid) +
                 "            <td>freq</td>\n".replace("freq", digi_frequency) +
@@ -536,7 +536,7 @@ map.on('singleclick', function (evt) {
                 "    </thead>\n" +
                 "    <tbody>\n" +
                 "        <tr class=\"active-row\">\n" +
-                "            <td>call</td>\n".replace("call", call) +
+                "            <td><a href=\https://www.qrz.com/db/call target='_blank' \>call</a></td>\n".replaceAll("call", call) +
                 "            <td>ssid</td>\n".replace("ssid", digi_ssid) +
                 "            <td>grid</td>\n".replace("grid", grid) +
                 "            <td>heard_directly</td>\n".replace("heard_directly", digi_direct_heard) +
