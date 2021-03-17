@@ -285,7 +285,10 @@ map.on('singleclick', function (evt) {
     let feature_type = undefined;
     let features = map.forEachFeatureAtPixel(evt.pixel, function (feature) {
         return feature;
-    });
+    },
+        {
+            hitTolerance: 15
+        });
 
     const viewResolution = /** @type {number} */ (view.getResolution());
     const VUHFPathInfo = VUHFNetworkSource.getFeatureInfoUrl(
