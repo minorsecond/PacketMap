@@ -239,29 +239,39 @@ var featureOverlay = new VectorLayer({
     },
 });
 
-function get_frequency (port_name) {
+function get_frequency (ports) {
     // Try to get frequency from port name
+    const port_split = ports.split(",");
+    let freqs = "Unknown";
 
-    let digi_frequency = 'Unknown';
-    for (let i=0; i < port_name.length; i++) {
-        const port_name_part = port_name[i];
-        if (/^7\.\d*$/.test(port_name_part) ||
-            /^14\.\d*$/.test(port_name_part) ||
-            /^22\.\d*$/.test(port_name_part) ||
-            /^14.\.\d*$/.test(port_name_part) ||
-            /^44.\.\d*$/.test(port_name_part)) {
-            digi_frequency = port_name_part + " Mhz"
+    for (let i=0; i < port_split.length; i++) {
+        const s = port_split[i].split(' ');
+        for (let i=0; i < s.length; i++) {
+            const port_name_part = s[i];
+            if (/^7\.\d*$/.test(port_name_part) ||
+                /^14\.\d*$/.test(port_name_part) ||
+                /^22\.\d*$/.test(port_name_part) ||
+                /^14.\.\d*$/.test(port_name_part) ||
+                /^44.\.\d*$/.test(port_name_part)) {
+                const frequency = port_name_part + " Mhz<BR/>"
+                if (!freqs.includes(frequency)) {
+                    if (freqs === "Unknown") {
+                        freqs = frequency;
+                    } else {
+                        freqs = freqs + frequency;
+                    }
+                }
+            }
         }
     }
-
-    return digi_frequency;
+    console.log(freqs);
+    return freqs;
 }
 
 let highlight;
 
 function replace_band_order (stringList) {
     let res_list = "";
-    console.log(res_list);
     let split_list = stringList.split(',');
     for (let i = 0; i < split_list.length; i++) {
         let band = split_list[i]
@@ -368,8 +378,6 @@ map.on('singleclick', function (evt) {
                 {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'});
 
             const port_name = features.get('port').split(" ");
-            const frequency = get_frequency(port_name);
-            console.log(frequency);
 
             let bands = features.get("bands")
             if (bands !== undefined && bands !== null) {
@@ -417,6 +425,7 @@ map.on('singleclick', function (evt) {
                 "        <tr>\n" +
                 "            <th>Call</th>\n" +
                 "            <th>Grid</th>\n" +
+                "            <th>Heard On</th>\n" +
                 "            <th>Last Heard</th>\n" +
                 "        </tr>\n" +
                 "    </thead>\n" +
@@ -424,6 +433,7 @@ map.on('singleclick', function (evt) {
                 "        <tr class=\"active-row\">\n" +
                 "            <td><a href=\https://www.qrz.com/db/call target='_blank' \>call</a></td>\n".replaceAll("call", call) +
                 "            <td>grid</td>\n".replace("grid", grid) +
+                "            <td>2M</td>\n" +
                 "            <td>last_heard</td>\n".replace("last_heard", op_formatted_lh) +
                 "        </tr>\n" +
                 "        <!-- and so on... -->\n" +
@@ -467,10 +477,11 @@ map.on('singleclick', function (evt) {
                 {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'});
             let digi_direct_heard = features.get("heard");
             let digi_ssid = features.get("ssid");
+            const ports = features.get('ports');
 
             // Try to get digi frequency from port name
             const digi_port = features.get('last_port').split(" ");
-            const digi_frequency = get_frequency(digi_port);
+            const digi_frequency = get_frequency(ports);
 
             if (digi_ssid === null || digi_ssid === undefined) {
                 digi_ssid = "None";
@@ -534,6 +545,7 @@ map.on('singleclick', function (evt) {
                 "            <th>Call</th>\n" +
                 "            <th>SSID</th>\n" +
                 "            <th>Grid</th>\n" +
+                "            <th>Freq.</th>\n" +
                 "            <th>Heard Directly</th>\n" +
                 "            <th>Last RX</th>\n" +
                 "        </tr>\n" +
@@ -543,6 +555,7 @@ map.on('singleclick', function (evt) {
                 "            <td><a href=\https://www.qrz.com/db/call target='_blank' \>call</a></td>\n".replaceAll("call", call) +
                 "            <td>ssid</td>\n".replace("ssid", digi_ssid) +
                 "            <td>grid</td>\n".replace("grid", grid) +
+                "            <td>145.05</td>\n" +
                 "            <td>heard_directly</td>\n".replace("heard_directly", digi_direct_heard) +
                 "            <td>last_heard</td>\n".replace("last_heard", digi_formatted_lh) +
                 "        </tr>\n" +
