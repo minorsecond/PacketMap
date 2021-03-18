@@ -247,6 +247,7 @@ function get_frequency (port_name) {
         const port_name_part = port_name[i];
         if (/^7\.\d*$/.test(port_name_part) ||
             /^14\.\d*$/.test(port_name_part) ||
+            /^22\.\d*$/.test(port_name_part) ||
             /^14.\.\d*$/.test(port_name_part) ||
             /^44.\.\d*$/.test(port_name_part)) {
             digi_frequency = port_name_part + " Mhz"
