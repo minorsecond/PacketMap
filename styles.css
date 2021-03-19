@@ -146,12 +146,12 @@ body {
 
 .boxed {
     width:36px;
-    height: 39px;
+    height: 36px;
     text-align: center;
     font-size: 2em;
     color: #009879;
     background-color: #ffffff;
-    border: solid #ddedf2 3px;
+    border: solid rgba(220, 220, 220, .5) 3px;
 }
 
 .infosymbol {
