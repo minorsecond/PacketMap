@@ -147,6 +147,7 @@ body {
 .boxed {
     width:36px;
     height: 36px;
+    border-radius: 4px;
     text-align: center;
     font-size: 2em;
     color: #009879;
