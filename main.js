@@ -241,30 +241,30 @@ var featureOverlay = new VectorLayer({
 
 function get_frequency (ports) {
     // Try to get frequency from port name
-    const port_split = ports.split(",");
     let freqs = "Unknown";
-
-    for (let i=0; i < port_split.length; i++) {
-        const s = port_split[i].split(' ');
-        for (let i=0; i < s.length; i++) {
-            const port_name_part = s[i];
-            if (/^7\.\d*$/.test(port_name_part) ||
-                /^14\.\d*$/.test(port_name_part) ||
-                /^22\.\d*$/.test(port_name_part) ||
-                /^14.\.\d*$/.test(port_name_part) ||
-                /^44.\.\d*$/.test(port_name_part)) {
-                const frequency = port_name_part + " Mhz<BR/>"
-                if (!freqs.includes(frequency)) {
-                    if (freqs === "Unknown") {
-                        freqs = frequency;
-                    } else {
-                        freqs = freqs + frequency;
+    if (ports !== null) {
+        const port_split = ports.split(",");
+        for (let i=0; i < port_split.length; i++) {
+            const s = port_split[i].split(' ');
+            for (let i=0; i < s.length; i++) {
+                const port_name_part = s[i];
+                if (/^7\.\d*$/.test(port_name_part) ||
+                    /^14\.\d*$/.test(port_name_part) ||
+                    /^22\.\d*$/.test(port_name_part) ||
+                    /^14.\.\d*$/.test(port_name_part) ||
+                    /^44.\.\d*$/.test(port_name_part)) {
+                    const frequency = port_name_part + " Mhz<BR/>"
+                    if (!freqs.includes(frequency)) {
+                        if (freqs === "Unknown") {
+                            freqs = frequency;
+                        } else {
+                            freqs = freqs + frequency;
+                        }
                     }
                 }
             }
         }
     }
-    console.log(freqs);
     return freqs;
 }
 
