@@ -43,9 +43,15 @@
     <div class="sidebar-content">
       <div class="sidebar-pane" id="home">
         <h1 class="sidebar-header">
-          sidebar-v2
+          Packet Radio Map
           <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
         </h1>
+        <p>Nodes & digipeaters in the Denver area are scanned every 15 minutes.</p>
+        <p>Every half hour, a random NET/ROM node is selected. This node is checked for new nodes, and their MHeard
+          list is scanned for new operators & digipeaters.</p>
+        <div style="margin: auto; width: 50%; horiz-align: center; top: 8%;" class id="map-legend"> </div>
+        <p>If you have a suggestion for a new node or digipeater, click the mail icon. The entry won't be added
+        to the map immediately, but will be added the next time the call shows up on an MHeard list.</p>
       </div>
       <div class="sidebar-pane" id="messages">
         <h1 class="sidebar-header">Messages<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
@@ -63,6 +69,5 @@
     </div>
     <div style="position: absolute; right: 9px; top: 201px" id="ls_controller"></div>
     <div style="position: absolute; right: 2%; bottom: 2%;" class id="info"> </div>
-    <div style="position: absolute; left: 2%; top: 8%;" class id="map-legend"> </div>
   </body>
 </html>
