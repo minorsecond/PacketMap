@@ -3,7 +3,6 @@ import 'ol-layerswitcher/dist/ol-layerswitcher.css';
 import LayerGroup from 'ol/layer/Group'
 import Map from 'ol/Map';
 import OSM from 'ol/source/OSM';
-import SourceStamen from 'ol/source/Stamen';
 import TileWMS from 'ol/source/TileWMS'
 import View from 'ol/View';
 import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
@@ -11,8 +10,10 @@ import {bbox as bboxStrategy} from 'ol/loadingstrategy'
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
 import {Style, Circle, Fill, Stroke} from 'ol/style';
+import {Sidebar} from 'ol/control.js';
 
-import LayerSwitcher, {GroupLayerOptions} from 'ol-layerswitcher';
+import LayerSwitcher from 'ol-layerswitcher';
+import RenderOptions from 'ol-layerswitcher'
 
 const OSMLayer = new TileLayer({
     type: 'base',
@@ -223,22 +224,6 @@ const view = new View({
     zoom: 4,
 });
 
-const map = new Map({
-  layers: [OSMLayer, vectorLayers],
-  target: 'map',
-  view: view,
-});
-
-var featureOverlay = new VectorLayer({
-    source: new VectorSource(),
-    map: map,
-    style: function (feature) {
-        highlightStyle.getGeometry.setGeometry();
-        //highlightStyle.getText().setText(feature.get('call'));
-        return highlightStyle;
-    },
-});
-
 function get_frequency (ports) {
     // Try to get frequency from port name
     let freqs = "Unknown";
@@ -289,7 +274,20 @@ function replace_band_order (stringList) {
     return res_list.replace(/,\s*$/, "");
 }
 
-map.addControl(layerSwitcher);
+const map = new Map({
+    layers: [OSMLayer, vectorLayers],
+    target: 'map',
+    view: view,
+});
+
+const render_options = new RenderOptions({
+    activationMode: 'mouseover',
+    startActive: false,
+    collapseLabel: '\u00BB',
+    label: '\u00AB',
+    reverse: false,
+    groupSelectStyle: "children"
+});
 
 map.on('singleclick', function (evt) {
     document.getElementById('info').innerHTML = '';
@@ -573,6 +571,9 @@ map.on('singleclick', function (evt) {
 
 // Build legend
 window.onload = function () {
+    const sidebar = new Sidebar({ element: 'sidebar', position: 'left' });
+    //LayerSwitcher.renderPanel(map, document.getElementById('ls_controller'), render_options);
+    map.addControl(sidebar);
     document.getElementById('map-legend').innerHTML =
         "<table class=\"styled-legend\">\n" +
         "    <thead>\n" +

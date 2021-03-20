@@ -1,5 +1,7 @@
 body {
-    font-family: Arial, serif
+    font-family: Arial, serif;
+    padding: 0;
+    margin: 0;
 }
 
 .table-title {
@@ -152,7 +154,7 @@ body {
     font-size: 2em;
     color: #009879;
     background-color: #ffffff;
-    border: solid rgba(220, 220, 220, .5) 3px;
+    border: solid rgba(220, 220, 220, .4) 3px;
 }
 
 .infosymbol {
