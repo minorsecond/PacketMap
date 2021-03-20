@@ -572,7 +572,7 @@ map.on('singleclick', function (evt) {
 // Build legend
 window.onload = function () {
     const sidebar = new Sidebar({ element: 'sidebar', position: 'left' });
-    //LayerSwitcher.renderPanel(map, document.getElementById('ls_controller'), render_options);
+    map.addControl(layerSwitcher);
     map.addControl(sidebar);
     document.getElementById('map-legend').innerHTML =
         "<table class=\"styled-legend\">\n" +
