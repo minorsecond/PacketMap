@@ -614,7 +614,7 @@ window.onload = function () {
         "            <td><hr class='vuhf-net-path'</td>\n" +
         "            <td>V/UHF Network Path</td>\n" +
         "            <td></td>" +
-        "        </tr>"
+        "        </tr>" +
         "        </tr>\n" +
         "    </tbody>\n" +
         "</table>"
