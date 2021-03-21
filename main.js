@@ -238,7 +238,7 @@ function get_frequency (ports) {
                     /^22\.\d*$/.test(port_name_part) ||
                     /^14.\.\d*$/.test(port_name_part) ||
                     /^44.\.\d*$/.test(port_name_part)) {
-                    const frequency = port_name_part + " Mhz<BR/>"
+                    const frequency = parseFloat(port_name_part).toString() + " Mhz<BR/>"
                     if (!freqs.includes(frequency)) {
                         if (freqs === "Unknown") {
                             freqs = frequency;
