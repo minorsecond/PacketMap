@@ -220,8 +220,8 @@ let layerSwitcher = new LayerSwitcher({
 layerSwitcher.useLegendGraphics = true;
 
 const view = new View({
-    center: [-11686454,4832146],
-    zoom: 4,
+    center: [0,0],
+    zoom: 0,
 });
 
 function get_frequency (ports) {
@@ -479,6 +479,7 @@ map.on('singleclick', function (evt) {
 
             // Try to get digi frequency from port name
             const digi_port = features.get('last_port').split(" ");
+            console.log(ports);
             const digi_frequency = get_frequency(ports);
 
             if (digi_ssid === null || digi_ssid === undefined) {
