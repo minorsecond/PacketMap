@@ -10,8 +10,9 @@ import {bbox as bboxStrategy} from 'ol/loadingstrategy'
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
 import {Style, Circle, Fill, Stroke} from 'ol/style';
+import {Attribution, defaults as defaultControls} from 'ol/control'
+import XYZ from "ol/source/XYZ";
 import {Sidebar} from 'ol/control.js';
-
 import LayerSwitcher from 'ol-layerswitcher';
 import RenderOptions from 'ol-layerswitcher'
 
@@ -23,7 +24,11 @@ const OSMLayer = new TileLayer({
     type: 'base',
     visible: true,
     displayInLayerSwitcher: false,
-    source: new OSM()
+    source: new XYZ({
+        url:
+            'https://server.arcgisonline.com/ArcGIS/rest/services/' +
+            'World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
+    })
 })
 
 const VUHFNetworkSource = new TileWMS({
@@ -44,7 +49,7 @@ const VUHFNetworkMap = new TileLayer({
 
 const RemoteOPSource = new VectorSource({
     format: new GeoJSON(),
-    attributions: "| R.R. Wardrup | www.rwardrup.com",
+    attributions: "R.R. Wardrup | www.rwardrup.com",
     url: function (extent) {
         return (
             geoserver_wfs +
@@ -60,7 +65,7 @@ const RemoteOPSource = new VectorSource({
 
 const RemoteDigiSource = new VectorSource({
     format: new GeoJSON(),
-    attributions: "| R.R. Wardrup | www.rwardrup.com",
+    attributions: "R.R. Wardrup | www.rwardrup.com",
     url: function (extent) {
         return (
             geoserver_wfs +
@@ -76,7 +81,7 @@ const RemoteDigiSource = new VectorSource({
 
 const DirectHeardOPSource = new VectorSource({
     format: new GeoJSON(),
-    attributions: "| R.R. Wardrup | www.rwardrup.com",
+    attributions: "R.R. Wardrup | www.rwardrup.com",
     url: function (extent) {
         return (
             geoserver_wfs +
@@ -92,7 +97,7 @@ const DirectHeardOPSource = new VectorSource({
 
 const DirectHeardDigiSource = new VectorSource({
     format: new GeoJSON(),
-    attributions: "| R.R. Wardrup | www.rwardrup.com",
+    attributions: "R.R. Wardrup | www.rwardrup.com",
     url: function (extent) {
         return (
             geoserver_wfs +
@@ -108,7 +113,7 @@ const DirectHeardDigiSource = new VectorSource({
 
 const nodeSource = new VectorSource({
     format: new GeoJSON(),
-    attributions: "| R.R. Wardrup | www.rwardrup.com",
+    attributions: "R.R. Wardrup | www.rwardrup.com",
     url: function (extent) {
         return (
             geoserver_wfs +
@@ -191,14 +196,14 @@ var RemoteDigiMap = new VectorLayer({
 });
 
 var OPMap = new VectorLayer({
-    title: 'Local Operators',
+    title: 'Operators via RF',
     visible: true,
     source: DirectHeardOPSource,
     style: DirectHeardOPStyle,
 });
 
 var DigiMap = new VectorLayer({
-    title: 'Local Digipeaters',
+    title: 'Digipeaters via RF',
     visible: true,
     source: DirectHeardDigiSource,
     style: DirectHeardDigiStyle,
@@ -282,6 +287,11 @@ const map = new Map({
     layers: [OSMLayer, vectorLayers],
     target: 'map',
     view: view,
+    controls: defaultControls({
+        attributionOptions: {
+            collapsible: false
+        }
+    })
 });
 
 const render_options = new RenderOptions({
@@ -570,6 +580,10 @@ map.on('singleclick', function (evt) {
         console.log("Clicked on undefined feature");
     }
 });
+
+const attribution = new Attribution({
+    collapsible: false
+})
 
 // Build legend
 window.onload = function () {
