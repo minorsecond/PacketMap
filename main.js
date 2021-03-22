@@ -433,7 +433,7 @@ map.on('singleclick', function (evt) {
             document.getElementById('info').innerHTML =
                 "<table class=\"styled-table\">\n" +
                 "    <thead>\n" +
-                "      <tr><th colspan='4' class='table-title'>Operator Heard Locally</th></tr>" +
+                "      <tr><th colspan='4' class='table-title'>Operator (via RF)</th></tr>" +
                 "        <tr>\n" +
                 "            <th>Call</th>\n" +
                 "            <th>Grid</th>\n" +
@@ -550,7 +550,7 @@ map.on('singleclick', function (evt) {
             document.getElementById('info').innerHTML =
                 "<table class=\"styled-table\">\n" +
                 "    <thead>\n" +
-                "      <tr><th colspan='6' class='table-title'>Digipeater</th></tr>" +
+                "      <tr><th colspan='6' class='table-title'>Digipeater (via RF)</th></tr>" +
                 "        <tr>\n" +
                 "            <th>Call</th>\n" +
                 "            <th>SSID</th>\n" +
