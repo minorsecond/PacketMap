@@ -15,6 +15,10 @@ import {Sidebar} from 'ol/control.js';
 import LayerSwitcher from 'ol-layerswitcher';
 import RenderOptions from 'ol-layerswitcher'
 
+const geoserver_url = "https://geo.packetradiomap.com/geoserver/";
+const geoserver_wms = geoserver_url + "PacketMap/wms";
+const geoserver_wfs = geoserver_url + "ows?service=WFS&";
+
 const OSMLayer = new TileLayer({
     type: 'base',
     visible: true,
@@ -23,7 +27,7 @@ const OSMLayer = new TileLayer({
 })
 
 const VUHFNetworkSource = new TileWMS({
-    url: 'https://geo.spatstats.com/geoserver/PacketMap/wms',
+    url: geoserver_wms,
     params: {'LAYERS': 'PacketMap:VUHF_Network',
         'TILED': true,
         'VERSION': '1.1.1',
@@ -43,7 +47,7 @@ const RemoteOPSource = new VectorSource({
     attributions: "| R.R. Wardrup | www.rwardrup.com",
     url: function (extent) {
         return (
-            'https://geo.spatstats.com/geoserver/ows?service=WFS&' +
+            geoserver_wfs +
             'version=1.0.0&request=GetFeature&typename=PacketMap:Remote_Operators&' +
             'outputFormat=application/json&srsname=EPSG:3857&' +
             'bbox=' +
@@ -59,7 +63,7 @@ const RemoteDigiSource = new VectorSource({
     attributions: "| R.R. Wardrup | www.rwardrup.com",
     url: function (extent) {
         return (
-            'https://geo.spatstats.com/geoserver/ows?service=WFS&' +
+            geoserver_wfs +
             'version=1.0.0&request=GetFeature&typename=PacketMap:Remote_Digipeaters&' +
             'outputFormat=application/json&srsname=EPSG:3857&' +
             'bbox=' +
@@ -75,7 +79,7 @@ const DirectHeardOPSource = new VectorSource({
     attributions: "| R.R. Wardrup | www.rwardrup.com",
     url: function (extent) {
         return (
-            'https://geo.spatstats.com/geoserver/ows?service=WFS&' +
+            geoserver_wfs +
             'version=1.0.0&request=GetFeature&typename=PacketMap:Operators&' +
             'outputFormat=application/json&srsname=EPSG:3857&' +
             'bbox=' +
@@ -91,7 +95,7 @@ const DirectHeardDigiSource = new VectorSource({
     attributions: "| R.R. Wardrup | www.rwardrup.com",
     url: function (extent) {
         return (
-            'https://geo.spatstats.com/geoserver/ows?service=WFS&' +
+            geoserver_wfs +
             'version=1.0.0&request=GetFeature&typename=PacketMap:Digipeaters&' +
             'outputFormat=application/json&srsname=EPSG:3857&' +
             'bbox=' +
@@ -107,7 +111,7 @@ const nodeSource = new VectorSource({
     attributions: "| R.R. Wardrup | www.rwardrup.com",
     url: function (extent) {
         return (
-            'https://geo.spatstats.com/geoserver/ows?service=WFS&' +
+            geoserver_wfs +
             'version=1.0.0&request=GetFeature&typename=PacketMap:Nodes&' +
             'outputFormat=application/json&srsname=EPSG:3857&' +
             'bbox=' +
@@ -444,14 +448,11 @@ map.on('singleclick', function (evt) {
             const node_last_check = features.get("last_check");
             const node_formatted_last_check = new Date(node_last_check).toLocaleString('en-US',
                 {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'});
-            const node_ssid = features.get("ssid");
-            const node_path = features.get("path");
-            const node_level = features.get("level");
 
             document.getElementById('info').innerHTML =
                 "<table class=\"styled-table\">\n" +
                 "    <thead>\n" +
-                "      <tr><th colspan='3' class='table-title'>Node</th></tr>" +
+                "      <tr><th colspan='4' class='table-title'>Node</th></tr>" +
                 "        <tr>\n" +
                 "            <th>Call</th>\n" +
                 "            <th>Grid</th>\n" +
