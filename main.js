@@ -213,7 +213,7 @@ var NodeMap = new VectorLayer({
 
 const vectorLayers = new LayerGroup({
     title: "Packet Stations",
-    layers: [VUHFNetworkMap, RemoteOPMap, RemoteDigiMap, NodeMap, DigiMap, OPMap]
+    layers: [RemoteOPMap, RemoteDigiMap, NodeMap, DigiMap, OPMap]
 })
 
 let layerSwitcher = new LayerSwitcher({
