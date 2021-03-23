@@ -456,8 +456,18 @@ map.on('singleclick', function (evt) {
             feature_type = "Nodes";
             const node_p_call = features.get("parent_call");
             const node_last_check = features.get("last_check");
+            let bpq = features.get("bpq");
             const node_formatted_last_check = new Date(node_last_check).toLocaleString('en-US',
                 {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'});
+
+            if (bpq === true) {
+                bpq = 'Yes';
+            } else if (bpq === false) {
+                bpq = "No";
+            } else {
+                bpq = "Unknown";
+            }
+
 
             document.getElementById('info').innerHTML =
                 "<table class=\"styled-table\">\n" +
@@ -466,6 +476,7 @@ map.on('singleclick', function (evt) {
                 "        <tr>\n" +
                 "            <th>Call</th>\n" +
                 "            <th>Grid</th>\n" +
+                "            <th>BPQ</th>\n" +
                 "            <th>Last Check</th>\n" +
                 "        </tr>\n" +
                 "    </thead>\n" +
@@ -473,6 +484,7 @@ map.on('singleclick', function (evt) {
                 "        <tr class=\"active-row\">\n" +
                 "            <td><a href=\https://www.qrz.com/db/call target='_blank' \>call</a></td>\n".replaceAll("call", call) +
                 "            <td>grid</td>\n".replace("grid", grid) +
+                "            <td>bpq</td>\n".replace("bpq", bpq) +
                 "            <td>last_check</td>\n".replace("last_check", node_formatted_last_check) +
                 "        </tr>\n" +
                 "        <!-- and so on... -->\n" +
