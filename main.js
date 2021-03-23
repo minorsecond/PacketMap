@@ -476,7 +476,7 @@ map.on('singleclick', function (evt) {
                 "        <tr>\n" +
                 "            <th>Call</th>\n" +
                 "            <th>Grid</th>\n" +
-                "            <th>BPQ</th>\n" +
+//                "            <th>BPQ</th>\n" +
                 "            <th>Last Check</th>\n" +
                 "        </tr>\n" +
                 "    </thead>\n" +
@@ -484,7 +484,7 @@ map.on('singleclick', function (evt) {
                 "        <tr class=\"active-row\">\n" +
                 "            <td><a href=\https://www.qrz.com/db/call target='_blank' \>call</a></td>\n".replaceAll("call", call) +
                 "            <td>grid</td>\n".replace("grid", grid) +
-                "            <td>bpq</td>\n".replace("bpq", bpq) +
+//                "            <td>bpq</td>\n".replace("bpq", bpq) +
                 "            <td>last_check</td>\n".replace("last_check", node_formatted_last_check) +
                 "        </tr>\n" +
                 "        <!-- and so on... -->\n" +
