@@ -277,6 +277,8 @@ function replace_band_order (stringList) {
             res_list += band += ', ';
         } else if (band === "40M") {
             res_list += band += ', ';
+        } else if (band === '80M') {
+            res_list += band += ', ';
         }
     }
 
@@ -392,6 +394,7 @@ map.on('singleclick', function (evt) {
             const port_name = features.get('port').split(" ");
 
             let bands = features.get("bands")
+            console.log(bands);
             if (bands !== undefined && bands !== null) {
                 bands = bands.replace(/(^,)|(,$)/g, "");
                 bands = replace_band_order(bands).replace(/,/g, ', ');  // 40CM, 2M, 20M, then 40M
