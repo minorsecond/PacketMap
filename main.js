@@ -267,19 +267,21 @@ let highlight;
 function replace_band_order (stringList) {
     let res_list = "";
     let split_list = stringList.split(',');
-    for (let i = 0; i < split_list.length; i++) {
-        let band = split_list[i]
-        if (band === "70CM") {
-            res_list += band += ', ';
-        } else if (band === "2M") {
-            res_list += band += ', ';
-        } else if (band === "20M") {
-            res_list += band += ', ';
-        } else if (band === "40M") {
-            res_list += band += ', ';
-        } else if (band === '80M') {
-            res_list += band += ', ';
-        }
+
+    if (stringList.includes('70CM')) {
+        res_list += "70CM" + ', ';
+    }
+    if (stringList.includes('2M')) {
+        res_list += "2M" + ', ';
+    }
+    if (stringList.includes('20M')) {
+        res_list += "20M" + ', ';
+    }
+    if (stringList.includes('40M')) {
+        res_list += "40M" + ', ';
+    }
+    if (stringList.includes('80M')) {
+        res_list += "80M" + ', ';
     }
 
     return res_list.replace(/,\s*$/, "");
