@@ -29,7 +29,7 @@
     <div class="sidebar-tabs">
       <ul role="tablist">
         <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
-        <li><a href="#notifications" role="tab"><i class="fa fa-exclamation-triangle"</a></li>
+        <li><a href="#notifications" role="tab"><i class="fa fa-exclamation-triangle"></i></a></li>
         <li><a href="https://form.jotform.com/210773558931159" target="_blank"><i class="fa fa-lightbulb-o"></i></a></li>
         <li><a href="https://www.rwardrup.com/dynamically-mapping-amateur-radio-packet-stations/" target="_blank"><i class="fa fa-info-circle"></i></a></li>
         <li><a href="https://github.com/minorsecond/mh-stats" role="tab" target="_blank"><i class="fa fa-github"></i></a></li>
@@ -57,6 +57,8 @@
         </h1>
         <p><b>2021-03-22</b><br>Switched from hamdb.org to qrz.com for coordinate info. Point coordinates may differ
         until all are re-scanned.<br></p>
+        <p><b>2021-03-25</b><br>Added callsign pattern matching so that aliases are not looked up on QRZ. This prevents
+        false positives from appearing. The effect will be seen gradually as MH lists are checked.</p>
       </div>
       <div class="sidebar-pane" id="messages">
         <h1 class="sidebar-header">Messages<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
