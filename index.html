@@ -14,11 +14,10 @@
     <title>Packet Radio Map</title>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-QF4ET8JV46"></script>
-    <script>
+    <script type="module">
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-QF4ET8JV46');
     </script>
     <style>
@@ -78,8 +77,8 @@
     </div>
   </div>
     <div style="float:left;" id="map" class="sidebar-map"></div>
-    <script src="node_modules/sidebar-v2/js/ol5-sidebar.js"></script>
-    <script src="./main.js"> </script>
+    <script type="module" src="node_modules/sidebar-v2/js/ol5-sidebar.js"></script>
+    <script type="module" src="./main.js"> </script>
     <div style="position: absolute; right: 2%; bottom: 2%;" class id="info"> </div>
   </body>
 </html>
